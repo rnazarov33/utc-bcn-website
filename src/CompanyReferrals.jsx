@@ -76,7 +76,7 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-20">
+    <div className="min-h-screen bg-gray-50 pb-20 transition-colors dark:bg-slate-950">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-black py-16 text-white lg:py-24">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.15),_transparent_40%)]" />
@@ -113,13 +113,13 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
 
       {/* Main Content */}
       <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="relative -mt-8 mb-12 rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl sm:p-10">
+        <div className="relative -mt-8 mb-12 rounded-[2rem] border border-gray-100 bg-white p-6 shadow-xl dark:border-slate-800 dark:bg-slate-900 sm:p-10">
           <div className="grid gap-6 md:grid-cols-2 lg:items-center">
-            <p className="text-base leading-7 text-slate-600">
+            <p className="text-base leading-7 text-slate-600 dark:text-slate-300">
               {t('referralsPage.description')}
             </p>
-            <div className="rounded-2xl bg-amber-50 p-4 border border-amber-100">
-              <p className="text-sm leading-6 text-amber-900">
+            <div className="rounded-2xl border border-amber-100 bg-amber-50 p-4 dark:border-amber-900/70 dark:bg-amber-950/40">
+              <p className="text-sm leading-6 text-amber-900 dark:text-amber-100">
                 {t('referralsPage.proTip')}
               </p>
             </div>
@@ -138,14 +138,14 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                 placeholder={t('referralsPage.searchPlaceholder')}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="block w-full rounded-xl border border-gray-100 bg-gray-50 py-3 pl-10 pr-3 text-sm placeholder-slate-400 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+                className="block w-full rounded-xl border border-gray-100 bg-gray-50 py-3 pl-10 pr-3 text-sm placeholder-slate-400 focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
               />
             </div>
             
             <select
               value={filterMethod}
               onChange={(e) => setFilterMethod(e.target.value)}
-              className="rounded-xl border border-gray-100 bg-gray-50 py-3 pl-4 pr-10 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand"
+              className="rounded-xl border border-gray-100 bg-gray-50 py-3 pl-4 pr-10 text-sm focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
             >
               <option value="All">{t('referralsPage.allMethods')}</option>
               <option value="Telegram">Telegram</option>
@@ -163,28 +163,28 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
             )}
           </div>
 
-          <div className="mt-4 text-sm text-slate-500">
+          <div className="mt-4 text-sm text-slate-500 dark:text-slate-400">
             {t('referralsPage.showing').replace('{count}', filteredData.length)}
           </div>
 
           {/* Table / Card List */}
-          <div className="mt-8 overflow-hidden rounded-2xl border border-gray-50 shadow-sm">
+          <div className="mt-8 overflow-hidden rounded-2xl border border-gray-50 shadow-sm dark:border-slate-800">
             {/* Desktop Table */}
             <div className="hidden md:block">
-              <table className="min-w-full divide-y divide-stone-200">
-                <thead className="bg-gray-50">
+              <table className="min-w-full divide-y divide-stone-200 dark:divide-slate-800">
+                <thead className="bg-gray-50 dark:bg-slate-950">
                   <tr>
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">{t('referralsPage.colCompany')}</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">{t('referralsPage.colPositions')}</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">{t('referralsPage.colContactPerson')}</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">{t('referralsPage.colWay')}</th>
-                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500">{t('referralsPage.colContact')}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('referralsPage.colCompany')}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('referralsPage.colPositions')}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('referralsPage.colContactPerson')}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('referralsPage.colWay')}</th>
+                    <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">{t('referralsPage.colContact')}</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-stone-100 bg-white">
+                <tbody className="divide-y divide-stone-100 bg-white dark:divide-slate-800 dark:bg-slate-900">
                   {filteredData.map((item, idx) => (
-                    <tr key={idx} className="hover:bg-gray-50/50">
-                      <td className="whitespace-nowrap px-6 py-5 text-sm font-medium text-slate-950">
+                    <tr key={idx} className="hover:bg-gray-50/50 dark:hover:bg-slate-950/60">
+                      <td className="whitespace-nowrap px-6 py-5 text-sm font-medium text-slate-950 dark:text-white">
                         {item.company}
                       </td>
                       <td className="px-6 py-5 text-sm">
@@ -198,10 +198,10 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                             {t('referralsPage.viewPositions')}
                           </a>
                         ) : (
-                          <span className="text-slate-400">—</span>
+                          <span className="text-slate-400 dark:text-slate-500">—</span>
                         )}
                       </td>
-                      <td className="whitespace-nowrap px-6 py-5 text-sm text-slate-600 font-medium">
+                      <td className="whitespace-nowrap px-6 py-5 text-sm font-medium text-slate-600 dark:text-slate-300">
                         {item.pointOfContact}
                       </td>
                       <td className="whitespace-nowrap px-6 py-5 text-sm">
@@ -213,7 +213,7 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                           {item.wayToContact}
                         </span>
                       </td>
-                      <td className="px-6 py-5 text-sm text-slate-600">
+                      <td className="px-6 py-5 text-sm text-slate-600 dark:text-slate-300">
                         {formatContactLink(item.wayToContact, item.contact)}
                       </td>
                     </tr>
@@ -225,9 +225,9 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
             {/* Mobile Cards */}
             <div className="grid gap-4 md:hidden">
               {filteredData.map((item, idx) => (
-                <div key={idx} className="bg-white p-5 border-b border-gray-50 last:border-0">
+                <div key={idx} className="border-b border-gray-50 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 last:border-0">
                   <div className="flex justify-between items-start mb-4">
-                    <div className="font-semibold text-slate-950 text-lg">{item.company}</div>
+                    <div className="text-lg font-semibold text-slate-950 dark:text-white">{item.company}</div>
                     <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
                       item.wayToContact === 'Telegram' ? 'bg-sky-50 text-brand-dark' :
                       item.wayToContact === 'WhatsApp' ? 'bg-emerald-50 text-emerald-700' :
@@ -238,11 +238,11 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                   </div>
                   <div className="space-y-3">
                     <div className="flex flex-col">
-                      <span className="text-xs uppercase font-bold text-slate-400 mb-1">{t('referralsPage.colContactPerson')}</span>
-                      <span className="text-sm font-medium text-slate-700">{item.pointOfContact}</span>
+                      <span className="mb-1 text-xs font-bold uppercase text-slate-400 dark:text-slate-500">{t('referralsPage.colContactPerson')}</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-200">{item.pointOfContact}</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-xs uppercase font-bold text-slate-400 mb-1">{t('referralsPage.colContact')}</span>
+                      <span className="mb-1 text-xs font-bold uppercase text-slate-400 dark:text-slate-500">{t('referralsPage.colContact')}</span>
                       <span className="text-sm">{formatContactLink(item.wayToContact, item.contact)}</span>
                     </div>
                     <div>
@@ -260,7 +260,7 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                           </svg>
                         </a>
                       ) : (
-                        <span className="text-sm text-slate-400 italic">{t('referralsPage.noPositions')}</span>
+                        <span className="text-sm italic text-slate-400 dark:text-slate-500">{t('referralsPage.noPositions')}</span>
                       )}
                     </div>
                   </div>
@@ -269,14 +269,14 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
             </div>
             
             {filteredData.length === 0 && (
-              <div className="bg-white py-12 text-center text-slate-500">
+              <div className="bg-white py-12 text-center text-slate-500 dark:bg-slate-900 dark:text-slate-400">
                 {t('referralsPage.noResults')}
               </div>
             )}
           </div>
 
-          <div className="mt-12 border-t border-gray-50 pt-8 text-center sm:text-left">
-            <p className="max-w-3xl text-sm leading-6 text-slate-500 italic">
+          <div className="mt-12 border-t border-gray-50 pt-8 text-center dark:border-slate-800 sm:text-left">
+            <p className="max-w-3xl text-sm italic leading-6 text-slate-500 dark:text-slate-400">
               {t('referralsPage.disclaimer')}
             </p>
           </div>

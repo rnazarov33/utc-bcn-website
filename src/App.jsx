@@ -10,10 +10,23 @@ export default function App() {
     const browserLang = navigator.language.split('-')[0];
     return (browserLang === 'uk' || browserLang === 'ru') ? 'uk' : 'en';
   });
+  const [theme, setTheme] = useState(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     localStorage.setItem('lang', lang);
   }, [lang]);
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+    document.body.classList.toggle('dark', theme === 'dark');
+    document.body.dataset.theme = theme;
+  }, [theme]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -118,8 +131,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900 selection:bg-brand selection:text-white">
-      <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} t={t} />
+    <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} theme-${theme} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
+      <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} t={t} />
       {view === 'home' ? (
         <main>
           <Hero links={links} t={t} />
@@ -140,7 +153,7 @@ export default function App() {
   );
 }
 
-function Header({ links, setView, currentView, lang, setLang, t }) {
+function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems = [
     { label: t('nav.events'), href: links.events, type: 'anchor' },
@@ -148,7 +161,6 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
     { label: t('nav.chats'), href: links.chats, type: 'anchor' },
     { label: t('nav.rules'), href: links.rules, type: 'anchor' },
     { label: t('nav.about'), href: links.about, type: 'anchor' },
-    { label: t('nav.join'), href: links.join, type: 'anchor' },
   ];
 
   const handleNavClick = (e, item) => {
@@ -172,7 +184,7 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
   };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a
           href="#top"
@@ -182,18 +194,18 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
           <img
             src="/images/logo-light.png"
             alt="UTC Barcelona"
-            className="h-10 w-auto"
+            className="h-10 w-auto dark:brightness-0 dark:invert"
           />
         </a>
 
-        <div className="flex items-center gap-5">
+        <div className="flex items-center gap-3 sm:gap-5">
           <nav className="hidden items-center gap-6 lg:flex">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`text-sm font-medium transition hover:text-slate-950 ${item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-500'
+                className={`text-sm font-medium transition hover:text-slate-950 dark:hover:text-white ${item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-500 dark:text-slate-400'
                   }`}
               >
                 {item.label}
@@ -202,11 +214,12 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
           </nav>
 
           <LanguageSelector lang={lang} setLang={setLang} />
+          <ThemeToggle theme={theme} setTheme={setTheme} t={t} />
 
           <button
             type="button"
             onClick={() => setMobileMenuOpen((open) => !open)}
-            className="inline-flex items-center justify-center rounded-lg border border-gray-200 p-2 text-slate-700 transition hover:bg-slate-50 lg:hidden"
+            className="inline-flex items-center justify-center rounded-lg border border-gray-200 p-2 text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-900 lg:hidden"
             aria-expanded={mobileMenuOpen}
             aria-controls="mobile-nav"
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
@@ -230,15 +243,15 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
       </div>
 
       {mobileMenuOpen && (
-        <div id="mobile-nav" className="border-t border-gray-200 bg-white lg:hidden">
+        <div id="mobile-nav" className="border-t border-gray-200 bg-white dark:border-slate-800 dark:bg-slate-950 lg:hidden">
           <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3 sm:px-6">
             {navItems.map((item) => (
               <a
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`rounded-lg px-3 py-3 text-sm font-medium transition hover:bg-slate-50 ${
-                  item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-700'
+                className={`rounded-lg px-3 py-3 text-sm font-medium transition hover:bg-slate-50 dark:hover:bg-slate-900 ${
+                  item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-700 dark:text-slate-200'
                 }`}
               >
                 {item.label}
@@ -260,20 +273,20 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
 
 function LanguageSelector({ lang, setLang }) {
   return (
-    <div className="flex items-center rounded-lg border border-gray-300 overflow-hidden">
+    <div className="flex items-center overflow-hidden rounded-lg border border-gray-300 dark:border-slate-700">
       <button
         onClick={() => setLang('en')}
         className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
-          lang === 'en' ? 'bg-brand text-white' : 'bg-white text-slate-600 hover:bg-gray-50'
+          lang === 'en' ? 'bg-brand text-white' : 'bg-white text-slate-600 hover:bg-gray-50 dark:bg-slate-950 dark:text-slate-300 dark:hover:bg-slate-900'
         }`}
       >
         EN
       </button>
-      <div className="w-px h-5 bg-gray-300" />
+      <div className="h-5 w-px bg-gray-300 dark:bg-slate-700" />
       <button
         onClick={() => setLang('uk')}
         className={`px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition ${
-          lang === 'uk' ? 'bg-brand text-white' : 'bg-white text-slate-600 hover:bg-gray-50'
+          lang === 'uk' ? 'bg-brand text-white' : 'bg-white text-slate-600 hover:bg-gray-50 dark:bg-slate-950 dark:text-slate-300 dark:hover:bg-slate-900'
         }`}
       >
         UA
@@ -282,20 +295,45 @@ function LanguageSelector({ lang, setLang }) {
   );
 }
 
+function ThemeToggle({ theme, setTheme, t }) {
+  const isDark = theme === 'dark';
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
+      aria-label={isDark ? t('nav.themeToLight') : t('nav.themeToDark')}
+      title={isDark ? t('nav.themeToLight') : t('nav.themeToDark')}
+    >
+      {isDark ? (
+        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <circle cx="12" cy="12" r="4" />
+          <path d="M12 2v2.5M12 19.5V22M4.93 4.93l1.77 1.77M17.3 17.3l1.77 1.77M2 12h2.5M19.5 12H22M4.93 19.07l1.77-1.77M17.3 6.7l1.77-1.77" />
+        </svg>
+      ) : (
+        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8Z" />
+        </svg>
+      )}
+    </button>
+  );
+}
+
 function Hero({ links, t }) {
   return (
-    <section id="top" className="relative overflow-hidden bg-white">
+    <section id="top" className="relative overflow-hidden bg-white transition-colors dark:bg-slate-950">
       <div className="relative mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-28">
         <div className="flex flex-col justify-center">
           <div className="mb-4 inline-flex w-fit items-center rounded-lg border border-brand/20 bg-brand/5 px-3 py-1 text-sm text-brand font-medium">
             {t('hero.eyebrow')}
           </div>
-          <h1 className="max-w-2xl text-5xl font-bold tracking-tighter text-slate-950 sm:text-6xl lg:text-7xl">
+          <h1 className="max-w-2xl text-5xl font-bold tracking-tighter text-slate-950 dark:text-white sm:text-6xl lg:text-7xl">
             {t('hero.title')}
           </h1>
-          <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
+          <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600 dark:text-slate-300">
             {t('hero.descriptionStart')}{' '}
-            <span className="font-semibold text-slate-900">
+            <span className="font-semibold text-slate-900 dark:text-white">
               {t('hero.descriptionHighlight')}
             </span>{' '}
             {t('hero.descriptionEnd')}
@@ -309,18 +347,18 @@ function Hero({ links, t }) {
             </a>
             <a
               href={links.events}
-              className="rounded-xl border border-gray-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 transition hover:border-gray-300 hover:bg-gray-50"
+              className="rounded-xl border border-gray-200 bg-white px-6 py-3.5 text-sm font-semibold text-slate-900 transition hover:border-gray-300 hover:bg-gray-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800"
             >
               {t('hero.ctaEvents')}
             </a>
           </div>
-          <p className="mt-6 text-sm text-slate-500">
+          <p className="mt-6 text-sm text-slate-500 dark:text-slate-400">
             {t('hero.badge')}
           </p>
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm hover:shadow-md transition duration-300">
+          <div className="rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm transition duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
             <div className="mb-4 aspect-[4/5] overflow-hidden rounded-[1rem]">
               <img
                 src="/images/750F535C-DCCB-4EB4-8913-BFA8D762499E.JPG?v=3"
@@ -329,10 +367,10 @@ function Hero({ links, t }) {
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
             </div>
-            <p className="px-2 pb-1 text-sm font-medium text-slate-700">{t('hero.photo1')}</p>
+            <p className="px-2 pb-1 text-sm font-medium text-slate-700 dark:text-slate-200">{t('hero.photo1')}</p>
           </div>
-          <div className="mt-8 rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm hover:shadow-md transition duration-300 sm:mt-14">
-            <div className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[1rem] bg-gray-50">
+          <div className="mt-8 rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm transition duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:mt-14">
+            <div className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[1rem] bg-gray-50 dark:bg-slate-800">
               <img
                 src="/images/72DA8CD1-2E97-40BD-AFF8-D80222154375.JPG?v=3"
                 alt="UTC Community"
@@ -345,7 +383,7 @@ function Hero({ links, t }) {
                 <p className="mt-1 text-xs text-white/80">{t('hero.photo2text')}</p>
               </div>
             </div>
-            <p className="px-2 pb-1 text-sm font-medium text-slate-700">{t('hero.photo3')}</p>
+            <p className="px-2 pb-1 text-sm font-medium text-slate-700 dark:text-slate-200">{t('hero.photo3')}</p>
           </div>
         </div>
       </div>
@@ -355,14 +393,14 @@ function Hero({ links, t }) {
 
 function StatsSection({ stats, t }) {
   return (
-    <section className="bg-gray-50 border-t border-gray-200">
+    <section className="border-t border-gray-200 bg-gray-50 transition-colors dark:border-slate-800 dark:bg-slate-900/60">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <SectionIntro eyebrow={t('stats.eyebrow')} title={t('stats.title')} />
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="rounded-xl border border-gray-200 bg-white p-6">
-              <div className="text-3xl font-bold tracking-tight text-slate-950">{stat.value}</div>
-              <div className="mt-2 text-sm text-slate-500">{stat.label}</div>
+            <div key={stat.label} className="rounded-xl border border-gray-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-950">
+              <div className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white">{stat.value}</div>
+              <div className="mt-2 text-sm text-slate-500 dark:text-slate-400">{stat.label}</div>
             </div>
           ))}
         </div>
@@ -373,7 +411,7 @@ function StatsSection({ stats, t }) {
 
 function FeatureSection({ features, t }) {
   return (
-    <section className="bg-white border-t border-gray-200">
+    <section className="border-t border-gray-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
         <SectionIntro
           eyebrow={t('features.eyebrow')}
@@ -382,12 +420,12 @@ function FeatureSection({ features, t }) {
         />
         <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {features.map((feature) => (
-            <div key={feature.title} className="rounded-xl border border-gray-200 bg-gray-50 p-6">
+            <div key={feature.title} className="rounded-xl border border-gray-200 bg-gray-50 p-6 dark:border-slate-800 dark:bg-slate-900">
               <div className="mb-4 h-10 w-10 rounded-lg bg-brand/15 flex items-center justify-center">
                 <div className="h-5 w-5 rounded bg-brand/40" />
               </div>
-              <h3 className="text-lg font-semibold tracking-tight text-slate-950">{feature.title}</h3>
-              <p className="mt-2 text-sm leading-7 text-slate-600">{feature.text}</p>
+              <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{feature.title}</h3>
+              <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-300">{feature.text}</p>
             </div>
           ))}
         </div>
@@ -398,7 +436,7 @@ function FeatureSection({ features, t }) {
 
 function EventsSection({ links, t }) {
   return (
-    <section id="events" className="bg-gray-50 border-t border-gray-200 py-12 lg:py-16">
+    <section id="events" className="border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
           <div>
@@ -413,14 +451,14 @@ function EventsSection({ links, t }) {
                 href="https://luma.com/utc-events?period=past"
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-gray-50"
+                className="rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-gray-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800"
               >
                 {t('events.pastEvents')}
               </a>
             </div>
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
             <iframe
               src="https://luma.com/embed/calendar/cal-XVqyCLhYYcyGZ8v/events"
               width="100%"
@@ -440,7 +478,7 @@ function EventsSection({ links, t }) {
 
 function JoinChatsSection({ chats, communityRulesHref, t }) {
   return (
-    <section id="community" className="bg-white border-t border-gray-200">
+    <section id="community" className="border-t border-gray-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <SectionIntro
         eyebrow={t('chats.eyebrow')}
@@ -453,12 +491,12 @@ function JoinChatsSection({ chats, communityRulesHref, t }) {
         href={chats.main.href}
         target="_blank"
         rel="noreferrer"
-        className="mt-8 block rounded-2xl border-2 border-brand/20 bg-gradient-to-br from-sky-50 to-white p-8 shadow-sm transition hover:border-brand/30 hover:shadow-md"
+        className="mt-8 block rounded-2xl border-2 border-brand/20 bg-gradient-to-br from-sky-50 to-white p-8 shadow-sm transition hover:border-brand/30 hover:shadow-md dark:from-slate-900 dark:to-slate-950"
       >
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight text-slate-950">{chats.main.title}</h3>
-            <p className="mt-2 max-w-xl text-base leading-7 text-slate-600">{chats.main.text}</p>
+            <h3 className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white">{chats.main.title}</h3>
+            <p className="mt-2 max-w-xl text-base leading-7 text-slate-600 dark:text-slate-300">{chats.main.text}</p>
           </div>
           <span className="inline-flex shrink-0 items-center rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-700">
             {chats.main.cta} →
@@ -474,10 +512,10 @@ function JoinChatsSection({ chats, communityRulesHref, t }) {
             href={ch.href}
             target="_blank"
             rel="noreferrer"
-            className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand/20 hover:shadow-md"
+            className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand/20 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
           >
-            <h3 className="text-lg font-semibold tracking-tight text-slate-950">{ch.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600">{ch.text}</p>
+            <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{ch.title}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{ch.text}</p>
             <span className="mt-4 inline-flex text-sm font-semibold text-brand group-hover:text-brand-dark">
               {t('chats.join')} →
             </span>
@@ -509,19 +547,19 @@ function CommunityRulesNotice({ communityRulesHref, t }) {
   }, []);
 
   return (
-    <div id="rules" className="mt-8 scroll-mt-24 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4">
+    <div id="rules" className="mt-8 scroll-mt-24 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/70">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
           <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400">{t('rules.eyebrow')}</div>
-          <div className="mt-1 text-sm font-medium text-slate-700">{t('rules.collapsedTitle')}</div>
-          <p className="mt-1 text-sm leading-6 text-slate-500">{t('rules.collapsedDescription')}</p>
+          <div className="mt-1 text-sm font-medium text-slate-700 dark:text-slate-100">{t('rules.collapsedTitle')}</div>
+          <p className="mt-1 text-sm leading-6 text-slate-500 dark:text-slate-400">{t('rules.collapsedDescription')}</p>
         </div>
 
         <div className="flex shrink-0 flex-row flex-wrap items-center gap-x-5 gap-y-2">
           <button
             type="button"
             onClick={() => setExpanded((value) => !value)}
-            className="inline-flex items-center justify-center text-sm font-medium text-slate-600 transition hover:text-slate-950"
+            className="inline-flex items-center justify-center text-sm font-medium text-slate-600 transition hover:text-slate-950 dark:text-slate-300 dark:hover:text-white"
             aria-expanded={expanded}
           >
             {expanded ? t('rules.collapse') : t('rules.expand')}
@@ -530,7 +568,7 @@ function CommunityRulesNotice({ communityRulesHref, t }) {
             href={communityRulesHref}
             target="_blank"
             rel="noreferrer"
-            className="inline-flex items-center justify-center text-sm font-semibold text-slate-700 transition hover:text-slate-950"
+            className="inline-flex items-center justify-center text-sm font-semibold text-slate-700 transition hover:text-slate-950 dark:text-slate-100 dark:hover:text-white"
           >
             {t('rules.cta')}
           </a>
@@ -538,24 +576,24 @@ function CommunityRulesNotice({ communityRulesHref, t }) {
       </div>
 
       {expanded && (
-        <div className="mt-4 border-t border-slate-200/80 pt-4">
-          <h3 className="text-sm font-semibold tracking-tight text-slate-900">{t('rules.title')}</h3>
-          <p className="mt-2 text-sm leading-6 text-slate-600">{t('rules.description')}</p>
-          <ul className="mt-3 grid gap-x-6 gap-y-2 text-sm leading-6 text-slate-600 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-4 border-t border-slate-200/80 pt-4 dark:border-slate-800">
+          <h3 className="text-sm font-semibold tracking-tight text-slate-900 dark:text-white">{t('rules.title')}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{t('rules.description')}</p>
+          <ul className="mt-3 grid gap-x-6 gap-y-2 text-sm leading-6 text-slate-600 dark:text-slate-300 md:grid-cols-2 xl:grid-cols-3">
             {compactItems.map((item) => (
               <li key={item} className="flex gap-3">
-                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" aria-hidden="true" />
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400 dark:bg-slate-500" aria-hidden="true" />
                 <span>{item}</span>
               </li>
             ))}
           </ul>
-          <p className="mt-3 text-sm leading-6 text-slate-500">
+          <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
             {t('rules.housingNote')}{' '}
             <a
               href={communityRulesHref}
               target="_blank"
               rel="noreferrer"
-              className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-500"
+              className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-500 dark:text-slate-100 dark:decoration-slate-600 dark:hover:text-white"
             >
               {t('rules.inlineLink')}
             </a>
@@ -613,7 +651,7 @@ function FeedbackSection({ t }) {
   const [activeForm, setActiveForm] = useState(null);
 
   return (
-    <section className="bg-white border-t border-gray-200">
+    <section className="border-t border-gray-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <SectionIntro
         eyebrow={t('feedback.eyebrow')}
@@ -621,9 +659,9 @@ function FeedbackSection({ t }) {
         description={t('feedback.description')}
       />
       <div className="mt-8 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm overflow-hidden transition-all duration-300">
-          <h3 className="text-xl font-semibold tracking-tight text-slate-950">{t('feedback.ideaTitle')}</h3>
-          <p className="mt-3 text-base leading-7 text-slate-600">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900">
+          <h3 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">{t('feedback.ideaTitle')}</h3>
+          <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
             {t('feedback.ideaText')}
           </p>
           {activeForm === 'idea' ? (
@@ -643,9 +681,9 @@ function FeedbackSection({ t }) {
           )}
         </div>
 
-        <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm overflow-hidden transition-all duration-300">
-          <h3 className="text-xl font-semibold tracking-tight text-slate-950">{t('feedback.issueTitle')}</h3>
-          <p className="mt-3 text-base leading-7 text-slate-600">
+        <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition-all duration-300 dark:border-slate-800 dark:bg-slate-900">
+          <h3 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">{t('feedback.issueTitle')}</h3>
+          <p className="mt-3 text-base leading-7 text-slate-600 dark:text-slate-300">
             {t('feedback.issueText')}
           </p>
           {activeForm === 'issue' ? (
@@ -658,7 +696,7 @@ function FeedbackSection({ t }) {
           ) : (
             <button
               onClick={() => setActiveForm('issue')}
-              className="mt-6 inline-flex rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-gray-50"
+              className="mt-6 inline-flex rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-gray-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800"
             >
               {t('feedback.issueCta')}
             </button>
@@ -701,7 +739,7 @@ function FeedbackForm({ t, type, webhook, onCancel }) {
 
   if (status === 'success') {
     return (
-      <div className="mt-6 rounded-2xl bg-green-50 p-4 border border-green-200 text-green-800 text-sm">
+      <div className="mt-6 rounded-2xl border border-green-200 bg-green-50 p-4 text-sm text-green-800 dark:border-emerald-900 dark:bg-emerald-950/60 dark:text-emerald-200">
         {t('feedback.formSuccess')}
       </div>
     );
@@ -713,20 +751,20 @@ function FeedbackForm({ t, type, webhook, onCancel }) {
         required
         name="name"
         placeholder={t('feedback.formName')}
-        className="w-full rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand"
+        className="w-full rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
       />
       <input
         required
         name="contact"
         placeholder={t('feedback.formContact')}
-        className="w-full rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand"
+        className="w-full rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
       />
       <textarea
         required
         name="message"
         rows={4}
         placeholder={t('feedback.formMessage')}
-        className="w-full resize-none rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand"
+        className="w-full resize-none rounded-xl border border-gray-100 px-4 py-2.5 text-sm outline-none transition focus:border-brand focus:ring-1 focus:ring-brand dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500"
       />
       <div className="flex items-center gap-3 mt-2">
         <button
@@ -740,7 +778,7 @@ function FeedbackForm({ t, type, webhook, onCancel }) {
           type="button"
           onClick={onCancel}
           disabled={status === 'submitting'}
-          className="rounded-full px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:text-slate-900 disabled:opacity-50"
+          className="rounded-full px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:text-slate-900 disabled:opacity-50 dark:text-slate-300 dark:hover:text-white"
         >
           {t('feedback.formCancel')}
         </button>
@@ -765,27 +803,27 @@ function AboutSection({ t, lang }) {
   };
 
   const link = (key) => (
-    <a href={names[key].url} target="_blank" rel="noreferrer" className="font-medium text-slate-950 underline decoration-brand/30 underline-offset-4 transition-colors hover:decoration-brand">
+    <a href={names[key].url} target="_blank" rel="noreferrer" className="font-medium text-slate-950 underline decoration-brand/30 underline-offset-4 transition-colors hover:decoration-brand dark:text-white">
       {lang === 'en' ? names[key].en : names[key].uk}
     </a>
   );
 
   return (
-    <section id="about" className="bg-gray-50 border-t border-gray-200 py-12 lg:py-16">
+    <section id="about" className="border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow={t('about.eyebrow')} title={t('about.title')} />
-        <div className="mt-6 rounded-xl border border-gray-200 bg-white p-8">
-          <p className="text-base leading-8 text-slate-700">
+        <div className="mt-6 rounded-xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-950">
+          <p className="text-base leading-8 text-slate-700 dark:text-slate-300">
             {lang === 'en' ? (
               <>{link('roman')}, {link('oleksiy')}, and {link('alina')} — Ukrainian IT professionals in Barcelona — decided to gather people offline in April 2024. Their first event at Glovo brought together more than 120 people, and that moment became the start of UTC.</>
             ) : (
               <>{link('roman')}, {link('oleksiy')} та {link('alina')} — українські IT-фахівці в Барселоні — у квітні 2024 року вирішили зібрати людей офлайн. Їхня перша подія в Glovo зібрала понад 120 людей, і з цього моменту почалася історія UTC.</>
             )}
           </p>
-          <p className="mt-5 text-base leading-8 text-slate-700">
+          <p className="mt-5 text-base leading-8 text-slate-700 dark:text-slate-300">
             {t('about.p2')}
           </p>
-          <p className="mt-5 text-base leading-8 text-slate-700">
+          <p className="mt-5 text-base leading-8 text-slate-700 dark:text-slate-300">
             {t('about.p3')}{' '}
             {link('roman')} — {t('about.cofounder')},{' '}
             {link('alina')} — {t('about.cofounder')},{' '}
@@ -839,25 +877,25 @@ function JoinSection({ links, t }) {
 
 function Footer({ links, communityRulesHref, t }) {
   return (
-    <footer className="border-t border-gray-100 bg-white">
+    <footer className="border-t border-gray-100 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
         <div>
-          <div className="text-base font-semibold text-slate-950">{t('footer.brand')}</div>
-          <p className="mt-3 text-sm leading-6 text-slate-600">
+          <div className="text-base font-semibold text-slate-950 dark:text-white">{t('footer.brand')}</div>
+          <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
             {t('footer.tagline')}
           </p>
         </div>
         <div>
-          <div className="text-sm font-semibold text-slate-950">{t('footer.explore')}</div>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600">
+          <div className="text-sm font-semibold text-slate-950 dark:text-white">{t('footer.explore')}</div>
+          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
             <a href={links.events}>{t('nav.events')}</a>
             <a href={links.referrals}>{t('nav.referrals')}</a>
             <a href={links.about}>{t('nav.about')}</a>
           </div>
         </div>
         <div>
-          <div className="text-sm font-semibold text-slate-950">{t('footer.links')}</div>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600">
+          <div className="text-sm font-semibold text-slate-950 dark:text-white">{t('footer.links')}</div>
+          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
             <a href={links.telegram} target="_blank" rel="noreferrer">Telegram</a>
             <a href={links.instagram} target="_blank" rel="noreferrer">Instagram</a>
             <a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
@@ -866,15 +904,15 @@ function Footer({ links, communityRulesHref, t }) {
           </div>
         </div>
         <div>
-          <div className="text-sm font-semibold text-slate-950">{t('footer.contact')}</div>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600">
+          <div className="text-sm font-semibold text-slate-950 dark:text-white">{t('footer.contact')}</div>
+          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
             <a href={links.email}>hello@utcbarcelona.com</a>
             <a href={links.ideaForm} target="_blank" rel="noreferrer">{t('feedback.ideaCta')}</a>
             <a href={links.issueForm} target="_blank" rel="noreferrer">{t('feedback.issueCta')}</a>
           </div>
         </div>
       </div>
-      <div className="border-t border-gray-100 px-4 py-4 text-center text-sm text-slate-500 sm:px-6 lg:px-8">
+      <div className="border-t border-gray-100 px-4 py-4 text-center text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400 sm:px-6 lg:px-8">
         {t('footer.builtWith')}
       </div>
     </footer>
@@ -887,8 +925,8 @@ function SectionIntro({ eyebrow, title, description }) {
       {eyebrow ? (
         <div className="text-sm font-medium uppercase tracking-[0.18em] text-brand">{eyebrow}</div>
       ) : null}
-      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 sm:text-4xl">{title}</h2>
-      {description ? <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600">{description}</p> : null}
+      <h2 className="mt-3 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl">{title}</h2>
+      {description ? <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">{description}</p> : null}
     </div>
   );
 }

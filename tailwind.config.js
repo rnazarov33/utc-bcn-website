@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  darkMode: 'class',
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -15,6 +16,8 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        sansEn: ['Inter', 'system-ui', 'sans-serif'],
+        sansUk: ['Onest', 'Inter', 'system-ui', 'sans-serif'],
       }
     },
   },

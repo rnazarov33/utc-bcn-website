@@ -8,6 +8,8 @@ export const translations = {
       about: "About",
       join: "Join",
       joinCommunity: "Join community",
+      themeToLight: "Switch to light theme",
+      themeToDark: "Switch to dark theme",
       backToHome: "Back to home",
       submitCompany: "Submit a new company"
     },
@@ -170,12 +172,14 @@ export const translations = {
       about: "Про UTC",
       join: "Долучитися",
       joinCommunity: "Долучитися до спільноти",
+      themeToLight: "Перемкнути на світлу тему",
+      themeToDark: "Перемкнути на темну тему",
       backToHome: "Назад на головну",
       submitCompany: "Додати компанію"
     },
     hero: {
-      eyebrow: "Українська Tech Спільнота",
-      title: "Спільнота, яку можна назвати своїм колом",
+      eyebrow: "Ukrainian Tech Community",
+      title: "Спільнота, де легко знайти своїх",
       descriptionStart: "UTC — це спільнота українців і друзів у Барселоні. Ми об’єднуємо",
       descriptionHighlight: "людей із tech, бізнесу та креативних сфер",
       descriptionEnd: "через події, професійні чати й мережу контактів, побудовану на довірі.",
@@ -256,8 +260,8 @@ export const translations = {
     },
     homeReferrals: {
       eyebrow: "UTC Referrals",
-      title: "Не з нуля. Через реферал.",
-      description: "Учасники UTC можуть порекомендувати вас у компанії в Барселоні. У багатьох є локальні іспанські контракти — це часто полегшує адаптацію.",
+      title: "Знайди роботу швидше — через рефералів.",
+      description: "Учасники UTC можуть порекомендувати вас у компанії в Барселоні, які пропонують іспанські контракти. Це часто полегшує адаптацію.",
       viewCta: "Переглянути компанії",
       addCta: "Додати свою компанію"
     },
