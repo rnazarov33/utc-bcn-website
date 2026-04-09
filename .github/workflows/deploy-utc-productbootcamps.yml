@@ -1,0 +1,36 @@
+name: Deploy UTC Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: utc-productbootcamps-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: vars.UTC_AUTODEPLOY_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Deploy to production server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ vars.UTC_DEPLOY_HOST }}
+          username: ${{ vars.UTC_DEPLOY_USER }}
+          key: ${{ secrets.UTC_DEPLOY_SSH_KEY }}
+          script_stop: true
+          command_timeout: 30m
+          envs: GITHUB_SHA
+          script: |
+            set -euo pipefail
+            cd /var/www/utc-productbootcamps/repo
+            git fetch --prune origin
+            git checkout main
+            git reset --hard "$GITHUB_SHA"
+            bash scripts/deploy-utc-productbootcamps.sh "$GITHUB_SHA"
