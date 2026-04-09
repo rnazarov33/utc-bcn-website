@@ -357,37 +357,124 @@ function Hero({ links, t }) {
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2">
-          <div className="rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm transition duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-4 aspect-[4/5] overflow-hidden rounded-[1rem]">
-              <img
-                src="/images/750F535C-DCCB-4EB4-8913-BFA8D762499E.JPG?v=3"
-                alt="UTC Barcelona community gathering"
-                className="h-full w-full object-cover transition duration-500 hover:scale-105"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-            </div>
-            <p className="px-2 pb-1 text-sm font-medium text-slate-700 dark:text-slate-200">{t('hero.photo1')}</p>
-          </div>
-          <div className="mt-8 rounded-[1.5rem] border border-gray-100 bg-white p-3 shadow-sm transition duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900 sm:mt-14">
-            <div className="group relative mb-4 aspect-[4/5] overflow-hidden rounded-[1rem] bg-gray-50 dark:bg-slate-800">
-              <img
-                src="/images/72DA8CD1-2E97-40BD-AFF8-D80222154375.JPG?v=3"
-                alt="UTC Community"
-                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                onError={(e) => { e.target.style.display = 'none'; }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 transition group-hover:opacity-100" />
-              <div className="absolute bottom-0 left-0 p-4 opacity-0 transition group-hover:opacity-100">
-                <p className="text-sm font-semibold text-white">{t('hero.photo2')}</p>
-                <p className="mt-1 text-xs text-white/80">{t('hero.photo2text')}</p>
-              </div>
-            </div>
-            <p className="px-2 pb-1 text-sm font-medium text-slate-700 dark:text-slate-200">{t('hero.photo3')}</p>
-          </div>
-        </div>
+        <HeroCarousel t={t} />
       </div>
     </section>
+  );
+}
+
+function HeroCarousel({ t }) {
+  const slides = [
+    {
+      src: "/images/750F535C-DCCB-4EB4-8913-BFA8D762499E.JPG?v=3",
+      alt: "UTC Barcelona community gathering",
+      title: t('hero.photo1'),
+      caption: t('hero.badge'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/72DA8CD1-2E97-40BD-AFF8-D80222154375.JPG?v=3",
+      alt: "UTC community",
+      title: t('hero.photo3'),
+      caption: t('hero.photo2text'),
+      imageClassName: "rotate-180",
+    },
+    {
+      src: "/images/0b33a600-84eb-4ef6-b9dc-3f30c1703799%20(1).avif",
+      alt: "UTC Barcelona event moment",
+      title: t('hero.photo1'),
+      caption: t('hero.badge'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/41544195-c405-4bb8-adc3-9c8ed5a2c14e.avif",
+      alt: "UTC Barcelona meetup",
+      title: t('hero.photo3'),
+      caption: t('hero.photo2text'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/721b14a7-3a26-4338-8b58-638109c0d88c.avif",
+      alt: "UTC Barcelona community photo",
+      title: t('hero.photo1'),
+      caption: t('hero.badge'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/A584953E-1C1E-40F8-A301-A6CC50D03F0B.JPG",
+      alt: "UTC Barcelona community event",
+      title: t('hero.photo3'),
+      caption: t('hero.photo2text'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/FB429EBB-3514-4D43-9268-794C877B0DC9.JPG",
+      alt: "UTC Barcelona crowd",
+      title: t('hero.photo1'),
+      caption: t('hero.badge'),
+      imageClassName: "",
+    },
+    {
+      src: "/images/d5c39b39-1617-4e3f-990d-9c454a3e9ff3.avif",
+      alt: "UTC Barcelona social gathering",
+      title: t('hero.photo3'),
+      caption: t('hero.photo2text'),
+      imageClassName: "",
+    },
+  ];
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length);
+    }, 4500);
+
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
+
+  const goToSlide = (index) => setActiveSlide(index);
+
+  return (
+    <div className="relative">
+      <div className="overflow-hidden rounded-[2rem] border border-gray-100 bg-white p-3 shadow-sm transition duration-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-900">
+        <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-gray-50 dark:bg-slate-800">
+          {slides.map((slide, index) => (
+            <div
+              key={slide.src}
+              className={`absolute inset-0 transition-all duration-700 ${
+                index === activeSlide ? 'opacity-100 scale-100' : 'pointer-events-none opacity-0 scale-[1.03]'
+              }`}
+            >
+              <img
+                src={slide.src}
+                alt={slide.alt}
+                className={`h-full w-full object-cover transition-transform duration-700 ${slide.imageClassName}`}
+                onError={(e) => { e.target.style.display = 'none'; }}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/75 via-slate-950/15 to-transparent" />
+              <div className="absolute inset-x-0 bottom-0 p-6 pr-36 sm:pr-44">
+                <p className="max-w-[16ch] text-xl font-semibold leading-tight text-white sm:max-w-[18ch] sm:text-2xl">
+                  {slide.title}
+                </p>
+              </div>
+              <div className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/50 px-3 py-2 backdrop-blur">
+                {slides.map((item, dotIndex) => (
+                  <button
+                    key={item.src}
+                    type="button"
+                    onClick={() => goToSlide(dotIndex)}
+                    className={`h-2.5 rounded-full transition-all ${
+                      dotIndex === activeSlide ? 'w-8 bg-brand' : 'w-2.5 bg-white/45 hover:bg-white/75'
+                    }`}
+                    aria-label={`Go to slide ${dotIndex + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 

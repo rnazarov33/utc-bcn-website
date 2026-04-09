@@ -14,7 +14,7 @@ export const translations = {
       submitCompany: "Submit a new company"
     },
     hero: {
-      eyebrow: "Ukrainian Tech Community",
+      eyebrow: "Ukrainian Tech Community of Barcelona",
       title: "A curated community to call home",
       descriptionStart: "UTC is a high-intent community of Ukrainians and friends in Barcelona. We connect vetted",
       descriptionHighlight: "professionals across tech, business, and creative fields",
@@ -178,7 +178,7 @@ export const translations = {
       submitCompany: "Додати компанію"
     },
     hero: {
-      eyebrow: "Ukrainian Tech Community",
+      eyebrow: "Ukrainian Tech Community of Barcelona",
       title: "Спільнота, де легко знайти своїх",
       descriptionStart: "UTC — це спільнота українців і друзів у Барселоні. Ми об’єднуємо",
       descriptionHighlight: "людей із tech, бізнесу та креативних сфер",
