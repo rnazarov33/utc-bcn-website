@@ -73,7 +73,8 @@ export const translations = {
       housingText: "Apartments, roommates, and tips. Extra posting rules apply.",
       digest: "Hub Digest",
       digestText: "Weekly updates from the UTC Hub.",
-      join: "Join"
+      join: "Join",
+      inviteOnly: "Invite only"
     },
     rules: {
       eyebrow: "Community rules",
@@ -237,7 +238,8 @@ export const translations = {
       housingText: "Квартири, кімнати, сусіди й корисні поради. Для постів діють додаткові правила.",
       digest: "Hub Digest",
       digestText: "Щотижневі оновлення від UTC Hub.",
-      join: "Долучитися"
+      join: "Долучитися",
+      inviteOnly: "Лише за запрошенням"
     },
     rules: {
       eyebrow: "Правила спільноти",

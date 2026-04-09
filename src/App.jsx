@@ -24,8 +24,6 @@ export default function App() {
     localStorage.setItem('theme', theme);
     document.documentElement.classList.toggle('dark', theme === 'dark');
     document.documentElement.style.colorScheme = theme;
-    document.body.classList.toggle('dark', theme === 'dark');
-    document.body.dataset.theme = theme;
   }, [theme]);
 
   useEffect(() => {
@@ -116,6 +114,7 @@ export default function App() {
         title: t('chats.chaos'),
         text: t('chats.chaosText'),
         href: "https://t.me/utcdiscuss",
+        inviteOnly: true,
       },
       {
         title: t('chats.housing'),
@@ -131,7 +130,7 @@ export default function App() {
   };
 
   return (
-    <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} theme-${theme} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
+    <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
       <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} t={t} />
       {view === 'home' ? (
         <main>
@@ -194,7 +193,7 @@ function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t
           <img
             src="/images/logo-light.png"
             alt="UTC Barcelona"
-            className="h-10 w-auto dark:brightness-0 dark:invert"
+            className="h-10 w-auto"
           />
         </a>
 
@@ -594,19 +593,32 @@ function JoinChatsSection({ chats, communityRulesHref, t }) {
       {/* Secondary chats */}
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {chats.channels.map((ch) => (
-          <a
-            key={ch.title}
-            href={ch.href}
-            target="_blank"
-            rel="noreferrer"
-            className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand/20 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
-          >
-            <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{ch.title}</h3>
-            <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{ch.text}</p>
-            <span className="mt-4 inline-flex text-sm font-semibold text-brand group-hover:text-brand-dark">
-              {t('chats.join')} →
-            </span>
-          </a>
+          ch.inviteOnly ? (
+            <div
+              key={ch.title}
+              className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{ch.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{ch.text}</p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-slate-500 dark:text-slate-400">
+                {t('chats.inviteOnly')}
+              </span>
+            </div>
+          ) : (
+            <a
+              key={ch.title}
+              href={ch.href}
+              target="_blank"
+              rel="noreferrer"
+              className="group rounded-2xl border border-gray-100 bg-white p-6 shadow-sm transition hover:border-brand/20 hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+            >
+              <h3 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">{ch.title}</h3>
+              <p className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{ch.text}</p>
+              <span className="mt-4 inline-flex text-sm font-semibold text-brand group-hover:text-brand-dark">
+                {t('chats.join')} →
+              </span>
+            </a>
+          )
         ))}
       </div>
 
@@ -965,7 +977,7 @@ function JoinSection({ links, t }) {
 function Footer({ links, communityRulesHref, t }) {
   return (
     <footer className="border-t border-gray-100 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
-      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
         <div>
           <div className="text-base font-semibold text-slate-950 dark:text-white">{t('footer.brand')}</div>
           <p className="mt-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
@@ -988,14 +1000,6 @@ function Footer({ links, communityRulesHref, t }) {
             <a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
             <a href={links.luma} target="_blank" rel="noreferrer">Luma</a>
             <a href={communityRulesHref} target="_blank" rel="noreferrer">{t('footer.rules')}</a>
-          </div>
-        </div>
-        <div>
-          <div className="text-sm font-semibold text-slate-950 dark:text-white">{t('footer.contact')}</div>
-          <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
-            <a href={links.email}>hello@utcbarcelona.com</a>
-            <a href={links.ideaForm} target="_blank" rel="noreferrer">{t('feedback.ideaCta')}</a>
-            <a href={links.issueForm} target="_blank" rel="noreferrer">{t('feedback.issueCta')}</a>
           </div>
         </div>
       </div>
