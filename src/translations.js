@@ -4,6 +4,7 @@ export const translations = {
       events: "Events",
       referrals: "Referrals",
       chats: "Chats",
+      rules: "Rules",
       about: "About",
       join: "Join",
       joinCommunity: "Join community",
@@ -11,9 +12,11 @@ export const translations = {
       submitCompany: "Submit a new company"
     },
     hero: {
-      eyebrow: "Ukrainians and friends in Barcelona",
+      eyebrow: "Ukrainian Tech Community",
       title: "A curated community to call home",
-      description: "UTC is a high-intent community of Ukrainians and friends in Barcelona. We connect vetted professionals across tech, business, and creative fields through events, professional circles, and trust-based networks.",
+      descriptionStart: "UTC is a high-intent community of Ukrainians and friends in Barcelona. We connect vetted",
+      descriptionHighlight: "professionals across tech, business, and creative fields",
+      descriptionEnd: "through events, professional circles, and trust-based networks.",
       ctaJoin: "Join the community",
       ctaEvents: "Explore events",
       badge: "Warm people. Real events. Practical community.",
@@ -63,12 +66,31 @@ export const translations = {
       product: "Product",
       productText: "PMs, analysts, and strategists.",
       chaos: "Chaos",
-      chaosText: "Off-topic, memes, and random vibes.",
+      chaosText: "Off-topic, memes, and random vibes. Available by invitation only.",
       housing: "Housing",
-      housingText: "Apartments, roommates, and tips.",
+      housingText: "Apartments, roommates, and tips. Extra posting rules apply.",
       digest: "Hub Digest",
       digestText: "Weekly updates from the UTC Hub.",
       join: "Join"
+    },
+    rules: {
+      eyebrow: "Community rules",
+      title: "Community rules for UTC chats",
+      collapsedTitle: "Rules exist for all UTC chats.",
+      collapsedDescription: "See a quick summary here or open the full public rules on GitHub.",
+      description: "Our chats are moderated and built around trust. Before joining the conversation, take a minute to understand the basics.",
+      compactItems: [
+        "Allowed languages are Ukrainian, English, and Spanish.",
+        "Russian language and Russian-language content are not allowed.",
+        "Respect, privacy, and safety are mandatory, and moderation is enforced.",
+        "Ads and fundraising posts require prior approval from the UTC team.",
+        "Job posts may need approval, and fundraising is only allowed in exceptional cases."
+      ],
+      housingNote: "Some spaces have extra posting requirements, especially the housing chat. Full details, moderation process, and contact points live in our public rules.",
+      inlineLink: "Read the full rules.",
+      cta: "Read full rules on GitHub",
+      expand: "Show summary",
+      collapse: "Hide summary"
     },
     homeReferrals: {
       eyebrow: "UTC Referrals",
@@ -135,6 +157,7 @@ export const translations = {
       explore: "Explore",
       links: "Links",
       contact: "Contact",
+      rules: "Community rules",
       builtWith: "Built with the community in Barcelona."
     }
   },
@@ -143,6 +166,7 @@ export const translations = {
       events: "Події",
       referrals: "Реферали",
       chats: "Чати",
+      rules: "Правила",
       about: "Про UTC",
       join: "Долучитися",
       joinCommunity: "Долучитися до спільноти",
@@ -150,9 +174,11 @@ export const translations = {
       submitCompany: "Додати компанію"
     },
     hero: {
-      eyebrow: "Українці та друзі в Барселоні",
+      eyebrow: "Українська Tech Спільнота",
       title: "Спільнота, яку можна назвати своїм колом",
-      description: "UTC — це спільнота українців і друзів у Барселоні. Ми об’єднуємо людей із tech, бізнесу та креативних сфер через події, професійні чати й мережу контактів, побудовану на довірі.",
+      descriptionStart: "UTC — це спільнота українців і друзів у Барселоні. Ми об’єднуємо",
+      descriptionHighlight: "людей із tech, бізнесу та креативних сфер",
+      descriptionEnd: "через події, професійні чати й мережу контактів, побудовану на довірі.",
       ctaJoin: "Долучитися до спільноти",
       ctaEvents: "Переглянути події",
       badge: "Теплі люди. Живі події. Практична спільнота.",
@@ -202,12 +228,31 @@ export const translations = {
       product: "Продукт",
       productText: "PM-и, аналітики та стратеги.",
       chaos: "Chaos",
-      chaosText: "Офтоп, меми й усе інше не по темі.",
+      chaosText: "Офтоп, меми й усе інше не по темі. Доступний лише за запрошенням.",
       housing: "Житло",
-      housingText: "Квартири, кімнати, сусіди й корисні поради.",
+      housingText: "Квартири, кімнати, сусіди й корисні поради. Для постів діють додаткові правила.",
       digest: "Hub Digest",
       digestText: "Щотижневі оновлення від UTC Hub.",
       join: "Долучитися"
+    },
+    rules: {
+      eyebrow: "Правила спільноти",
+      title: "Правила для чатів UTC",
+      collapsedTitle: "У чатах UTC діють спільні правила.",
+      collapsedDescription: "Тут можна швидко переглянути головне або перейти до повної версії правил на GitHub.",
+      description: "Наші чати модеруються і тримаються на взаємній повазі та довірі. Перед тим як долучитися до розмови, радимо швидко ознайомитися з основним.",
+      compactItems: [
+        "У чатах можна спілкуватися українською, англійською та іспанською.",
+        "Російська мова та російськомовний контент у спільноті заборонені.",
+        "Повага, приватність і безпека є обов’язковими, а правила модерації справді діють.",
+        "Рекламу та збори не можна публікувати без попереднього погодження з командою UTC.",
+        "Вакансії теж інколи потребують погодження, а збори можливі лише у виняткових випадках."
+      ],
+      housingNote: "У деяких чатах діють додаткові правила для постів, особливо в чаті про побут, житло й домашні питання. Повна версія правил, опис модерації та контакти зібрані в публічному документі.",
+      inlineLink: "Читати повні правила.",
+      cta: "Читати повні правила на GitHub",
+      expand: "Показати короткий виклад",
+      collapse: "Сховати короткий виклад"
     },
     homeReferrals: {
       eyebrow: "UTC Referrals",
@@ -274,6 +319,7 @@ export const translations = {
       explore: "Розділи",
       links: "Посилання",
       contact: "Контакти",
+      rules: "Правила спільноти",
       builtWith: "Зроблено разом зі спільнотою в Барселоні."
     }
   }

@@ -34,6 +34,7 @@ export default function App() {
     join: "#community",
     events: "#events",
     referrals: "#referrals",
+    rules: "#rules",
     about: "#about",
     telegram: "https://t.me/+sksFxTZOGEQ4MTQ6",
     instagram: "https://www.instagram.com/utc.barca/",
@@ -43,8 +44,11 @@ export default function App() {
     issueForm: "https://tally.so/r/your-issue-form",
     referralForm: "https://docs.google.com/forms/d/e/1FAIpQLSdAH8n78Clqrqz9P7mjZ8qlViqQqu9nKsdoU8tAIdOmVnzCIw/viewform",
     email: "mailto:hello@utcbarcelona.com",
-    chats: "#chats",
+    chats: "#community",
+    rulesRepo: "https://github.com/rnazarov33/utc-rules",
   };
+
+  const communityRulesHref = links.rulesRepo;
 
   const stats = [
     { value: "2024", label: t('stats.founded') },
@@ -113,17 +117,6 @@ export default function App() {
     ],
   };
 
-  const initiatives = [
-    {
-      title: "UTC Referrals",
-      text: "Help each other with trusted recommendations, jobs, services, and opportunities.",
-    },
-    {
-      title: "Ukrainian Businesses",
-      text: "Discover and support Ukrainian founders and businesses in Barcelona.",
-    },
-  ];
-
   return (
     <div className="min-h-screen bg-white text-slate-900 selection:bg-brand selection:text-white">
       <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} t={t} />
@@ -133,7 +126,7 @@ export default function App() {
           <StatsSection stats={stats} t={t} />
           <FeatureSection features={features} t={t} />
           <EventsSection links={links} t={t} />
-          <JoinChatsSection chats={communityChats} t={t} />
+          <JoinChatsSection chats={communityChats} communityRulesHref={communityRulesHref} t={t} />
           <ReferralsSection links={links} setView={setView} t={t} />
           <AboutSection t={t} lang={lang} />
           <FeedbackSection links={links} t={t} />
@@ -142,16 +135,18 @@ export default function App() {
       ) : (
         <CompanyReferrals onBack={() => setView('home')} links={links} lang={lang} t={t} />
       )}
-      <Footer links={links} t={t} />
+      <Footer links={links} communityRulesHref={communityRulesHref} t={t} />
     </div>
   );
 }
 
 function Header({ links, setView, currentView, lang, setLang, t }) {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems = [
     { label: t('nav.events'), href: links.events, type: 'anchor' },
     { label: t('nav.referrals'), href: '#', type: 'route', view: 'referrals' },
     { label: t('nav.chats'), href: links.chats, type: 'anchor' },
+    { label: t('nav.rules'), href: links.rules, type: 'anchor' },
     { label: t('nav.about'), href: links.about, type: 'anchor' },
     { label: t('nav.join'), href: links.join, type: 'anchor' },
   ];
@@ -159,10 +154,20 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
   const handleNavClick = (e, item) => {
     if (item.type === 'route') {
       e.preventDefault();
+      setMobileMenuOpen(false);
       setView(item.view);
     } else if (currentView !== 'home') {
-      // If we are on referrals page, we need to go home first then scroll
+      e.preventDefault();
+      setMobileMenuOpen(false);
       setView('home');
+      requestAnimationFrame(() => {
+        const target = document.querySelector(item.href);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    } else {
+      setMobileMenuOpen(false);
     }
   };
 
@@ -171,7 +176,7 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a
           href="#top"
-          onClick={(e) => { e.preventDefault(); setView('home'); window.scrollTo(0, 0); }}
+          onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setView('home'); window.scrollTo(0, 0); }}
           className="flex items-center"
         >
           <img
@@ -198,6 +203,23 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
 
           <LanguageSelector lang={lang} setLang={setLang} />
 
+          <button
+            type="button"
+            onClick={() => setMobileMenuOpen((open) => !open)}
+            className="inline-flex items-center justify-center rounded-lg border border-gray-200 p-2 text-slate-700 transition hover:bg-slate-50 lg:hidden"
+            aria-expanded={mobileMenuOpen}
+            aria-controls="mobile-nav"
+            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+              {mobileMenuOpen ? (
+                <path d="M6 6L18 18M18 6L6 18" />
+              ) : (
+                <path d="M4 7H20M4 12H20M4 17H20" />
+              )}
+            </svg>
+          </button>
+
           <a
             href={links.join}
             className="hidden rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-dark sm:block"
@@ -206,6 +228,32 @@ function Header({ links, setView, currentView, lang, setLang, t }) {
           </a>
         </div>
       </div>
+
+      {mobileMenuOpen && (
+        <div id="mobile-nav" className="border-t border-gray-200 bg-white lg:hidden">
+          <nav className="mx-auto flex max-w-7xl flex-col px-4 py-3 sm:px-6">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item)}
+                className={`rounded-lg px-3 py-3 text-sm font-medium transition hover:bg-slate-50 ${
+                  item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-700'
+                }`}
+              >
+                {item.label}
+              </a>
+            ))}
+            <a
+              href={links.join}
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark"
+            >
+              {t('nav.joinCommunity')}
+            </a>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
@@ -246,7 +294,11 @@ function Hero({ links, t }) {
             {t('hero.title')}
           </h1>
           <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
-            {t('hero.description')}
+            {t('hero.descriptionStart')}{' '}
+            <span className="font-semibold text-slate-900">
+              {t('hero.descriptionHighlight')}
+            </span>{' '}
+            {t('hero.descriptionEnd')}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
             <a
@@ -386,7 +438,7 @@ function EventsSection({ links, t }) {
   );
 }
 
-function JoinChatsSection({ chats, t }) {
+function JoinChatsSection({ chats, communityRulesHref, t }) {
   return (
     <section id="community" className="bg-white border-t border-gray-200">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
@@ -432,8 +484,85 @@ function JoinChatsSection({ chats, t }) {
           </a>
         ))}
       </div>
+
+      <CommunityRulesNotice communityRulesHref={communityRulesHref} t={t} />
       </div>
     </section>
+  );
+}
+
+function CommunityRulesNotice({ communityRulesHref, t }) {
+  const [expanded, setExpanded] = useState(false);
+  const compactItems = t('rules.compactItems');
+
+  useEffect(() => {
+    const syncExpandedWithHash = () => {
+      if (window.location.hash === '#rules') {
+        setExpanded(true);
+      }
+    };
+
+    syncExpandedWithHash();
+    window.addEventListener('hashchange', syncExpandedWithHash);
+
+    return () => window.removeEventListener('hashchange', syncExpandedWithHash);
+  }, []);
+
+  return (
+    <div id="rules" className="mt-8 scroll-mt-24 rounded-xl border border-slate-200/80 bg-slate-50/50 p-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <div className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-400">{t('rules.eyebrow')}</div>
+          <div className="mt-1 text-sm font-medium text-slate-700">{t('rules.collapsedTitle')}</div>
+          <p className="mt-1 text-sm leading-6 text-slate-500">{t('rules.collapsedDescription')}</p>
+        </div>
+
+        <div className="flex shrink-0 flex-row flex-wrap items-center gap-x-5 gap-y-2">
+          <button
+            type="button"
+            onClick={() => setExpanded((value) => !value)}
+            className="inline-flex items-center justify-center text-sm font-medium text-slate-600 transition hover:text-slate-950"
+            aria-expanded={expanded}
+          >
+            {expanded ? t('rules.collapse') : t('rules.expand')}
+          </button>
+          <a
+            href={communityRulesHref}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center justify-center text-sm font-semibold text-slate-700 transition hover:text-slate-950"
+          >
+            {t('rules.cta')}
+          </a>
+        </div>
+      </div>
+
+      {expanded && (
+        <div className="mt-4 border-t border-slate-200/80 pt-4">
+          <h3 className="text-sm font-semibold tracking-tight text-slate-900">{t('rules.title')}</h3>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{t('rules.description')}</p>
+          <ul className="mt-3 grid gap-x-6 gap-y-2 text-sm leading-6 text-slate-600 md:grid-cols-2 xl:grid-cols-3">
+            {compactItems.map((item) => (
+              <li key={item} className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400" aria-hidden="true" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p className="mt-3 text-sm leading-6 text-slate-500">
+            {t('rules.housingNote')}{' '}
+            <a
+              href={communityRulesHref}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-slate-700 underline decoration-slate-300 underline-offset-4 transition hover:text-slate-950 hover:decoration-slate-500"
+            >
+              {t('rules.inlineLink')}
+            </a>
+          </p>
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -708,7 +837,7 @@ function JoinSection({ links, t }) {
   );
 }
 
-function Footer({ links, t }) {
+function Footer({ links, communityRulesHref, t }) {
   return (
     <footer className="border-t border-gray-100 bg-white">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-4 lg:px-8">
@@ -733,6 +862,7 @@ function Footer({ links, t }) {
             <a href={links.instagram} target="_blank" rel="noreferrer">Instagram</a>
             <a href={links.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
             <a href={links.luma} target="_blank" rel="noreferrer">Luma</a>
+            <a href={communityRulesHref} target="_blank" rel="noreferrer">{t('footer.rules')}</a>
           </div>
         </div>
         <div>
