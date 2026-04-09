@@ -17,10 +17,10 @@ export default function UTCBarcelonaWebsite() {
   };
 
   const stats = [
-    { value: "40+", label: "community events" },
-    { value: "800+", label: "people connected offline" },
+    { value: "2024", label: "founded" },
+    { value: "60+", label: "community events" },
+    { value: "1200+", label: "people connected offline" },
     { value: "15–115", label: "people per event" },
-    { value: "1", label: "real hub in Barcelona" },
   ];
 
   const features = [
@@ -33,8 +33,8 @@ export default function UTCBarcelonaWebsite() {
       text: "From small meetups to large gatherings — practical, warm, and worth attending.",
     },
     {
-      title: "Hub",
-      text: "A physical space where people work, meet, and spend time together. Not just coworking — a shared home.",
+      title: "Advice",
+      text: "Practical advice on solving any errand in Barcelona so you can feel like home.",
     },
   ];
 
@@ -164,7 +164,7 @@ function Hero({ links }) {
               href={links.telegram}
               className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
             >
-              Join the community
+              Join the communiy
             </a>
             <a
               href={links.events}
@@ -249,9 +249,6 @@ function EventsSection({ links }) {
               title="See what’s happening next"
               description="Meetups, talks, gatherings, and community moments in Barcelona."
             />
-            <p className="mt-5 max-w-md text-base leading-7 text-slate-600">
-              Replace the placeholder on the right with your real Luma embed. Keep this section near the top so people can instantly see activity.
-            </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <a
                 href={links.luma}
@@ -438,7 +435,7 @@ function FeedbackSection({ links }) {
             rel="noreferrer"
             className="mt-6 inline-flex rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-slate-700"
           >
-            Report an idea
+            Share an idea
           </a>
         </div>
         <div className="rounded-[1.75rem] border border-stone-200 bg-white p-6 shadow-sm">

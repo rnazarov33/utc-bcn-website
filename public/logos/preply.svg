@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 120" fill="currentColor">
+  <!-- Preply Wordmark -->
+  <text x="0" y="85" font-family="Arial, Helvetica, sans-serif" font-size="75" font-weight="900" letter-spacing="-2">Preply</text>
+  <!-- Tri-stack Play Icon -->
+  <g transform="translate(300, 10)">
+    <path d="M20 0c-11 0-20 9-20 20v60c0 11 9 20 20 20h20l60-50L40 0H20zm20 80H20V20h20l40 30-40 30z" />
+    <path d="M40 20l40 30-40 30V20z" opacity="0.6" />
+    <path d="M60 40l20 10-20 10V40z" opacity="0.3" />
+  </g>
+</svg>

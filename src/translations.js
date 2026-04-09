@@ -1,0 +1,280 @@
+export const translations = {
+  en: {
+    nav: {
+      events: "Events",
+      referrals: "Referrals",
+      chats: "Chats",
+      about: "About",
+      join: "Join",
+      joinCommunity: "Join community",
+      backToHome: "Back to home",
+      submitCompany: "Submit a new company"
+    },
+    hero: {
+      eyebrow: "Ukrainians and friends in Barcelona",
+      title: "A curated community to call home",
+      description: "UTC is a high-intent community of Ukrainians and friends in Barcelona. We connect vetted professionals across tech, business, and creative fields through events, professional circles, and trust-based networks.",
+      ctaJoin: "Join the community",
+      ctaEvents: "Explore events",
+      badge: "Warm people. Real events. Practical community.",
+      photo1: "Offline events that feel worth leaving home for",
+      photo2: "Add your community moments here",
+      photo2text: "Real faces, real energy, real connection.",
+      photo3: "A real place, not just a group chat"
+    },
+    stats: {
+      eyebrow: "Traction",
+      title: "What we’ve built together",
+      founded: "founded",
+      events: "community events",
+      people: "people connected offline",
+      perEvent: "typical community discount"
+    },
+    features: {
+      eyebrow: "Why UTC",
+      title: "More than a community",
+      description: "UTC brings together people, events, and a real shared place in Barcelona.",
+      networkTitle: "Curated Network",
+      networkText: "Meet a high-intent group of Ukrainians across tech, business, and creative industries. Professional, warm, and vetted.",
+      eventsTitle: "Active Events",
+      eventsText: "From focused meetups to large community gatherings — offline moments that feel worth leaving home for.",
+      adviceTitle: "Trusted Advice",
+      adviceText: "Practical advice from people who've actually solved it. No noise, just helpful community members helping you feel at home.",
+      perksTitle: "Community Perks",
+      perksText: "Get 15–50% discounts on local events, goods, and services, plus occasional free tickets — made possible by the power of our community."
+    },
+    events: {
+      eyebrow: "Upcoming events",
+      title: "See what’s happening next",
+      description: "Meetups, talks, gatherings, and community moments in Barcelona.",
+      pastEvents: "See past events"
+    },
+    chats: {
+      eyebrow: "Join high-trust circles",
+      title: "Find your specific crowd",
+      description: "UTC is a vetted network. Join our professional circles to connect with founders, engineers, and creators solving similar problems.",
+      mainTitle: "UTC Main Chat",
+      mainText: "The heart of the community. Ask questions, share updates, meet people, and stay in the loop with everything happening in UTC Barcelona.",
+      mainCta: "Join the main chat",
+      designers: "Designers",
+      designersText: "UI/UX, brand, and visual creatives.",
+      engineers: "Engineers",
+      engineersText: "Backend, frontend, mobile, and infra.",
+      product: "Product",
+      productText: "PMs, analysts, and strategists.",
+      chaos: "Chaos",
+      chaosText: "Off-topic, memes, and random vibes.",
+      housing: "Housing",
+      housingText: "Apartments, roommates, and tips.",
+      digest: "Hub Digest",
+      digestText: "Weekly updates from the UTC Hub.",
+      join: "Join"
+    },
+    homeReferrals: {
+      eyebrow: "UTC Referrals",
+      title: "Skip the screening. Get referred.",
+      description: "Get referred to companies in Barcelona by UTC members. Many offer local Spanish contracts — great for settling in.",
+      viewCta: "View company referrals",
+      addCta: "Add your company"
+    },
+    referralsPage: {
+      title: "Company referrals",
+      subtitle: "A community-powered list of companies where UTC members may help with referrals or share a relevant point of contact.",
+      description: "See open positions, find the right contact person, and reach out in the preferred way. Please be respectful: referrals are based on trust, and not every request can be supported.",
+      proTip: "Pro tip: Before asking for a referral, make sure your CV matches with the position and salary expectations as well.",
+      searchPlaceholder: "Search company, contact, or handle...",
+      allMethods: "All methods",
+      showing: "Showing {count} companies",
+      clearFilters: "Clear filters",
+      colCompany: "Company",
+      colPositions: "Positions Open",
+      colContactPerson: "Point of Contact",
+      colWay: "Way to Contact",
+      colContact: "Contact",
+      viewPositions: "View positions",
+      noPositions: "No positions link provided",
+      noResults: "No companies found matching your search.",
+      disclaimer: "UTC shares these contacts to help the community navigate opportunities more easily. Please reach out thoughtfully, be concise, and respect people’s time."
+    },
+    feedback: {
+      eyebrow: "Feedback",
+      title: "Help us improve UTC",
+      description: "UTC is built with the community, not just for the community.",
+      ideaTitle: "Share an idea",
+      ideaText: "Suggest an event, format, initiative, partnership, or any improvement you’d love to see.",
+      issueTitle: "Report an issue",
+      issueText: "Seen something broken, confusing, or not working well? Tell us and we’ll take a look.",
+      ideaCta: "Share an idea",
+      issueCta: "Report an issue",
+      formName: "Your Name",
+      formContact: "Contact (Telegram / LinkedIn / Email)",
+      formMessage: "Your message...",
+      formCancel: "Cancel",
+      formSubmit: "Submit",
+      formSending: "Sending...",
+      formSuccess: "Thank you! We've received your submission."
+    },
+    about: {
+      eyebrow: "About",
+      title: "How it started",
+      p1: "UTC started in April 2024, when Roman Nazarov, Oleksiy Kupin, and Alina Nazarova — Ukrainian IT professionals in Barcelona — decided to gather people offline. Their first event at Glovo brought together more than 120 people, and that moment became the start of UTC.",
+      p2: "The idea behind UTC was simple: create a place where Ukrainians in Barcelona could feel a little more at home. A place that helps people adapt to life in Spain, grow professionally, meet like-minded people, and build meaningful new connections.",
+      p3: "Today, UTC is run by a committee of people who help guide the community and make sure it stays warm, trusted, and well cared for:",
+      cofounder: "co-founder"
+    },
+    joinFooter: {
+      eyebrow: "Join UTC",
+      title: "Whether you just arrived or have been here for years, you don’t have to figure it out alone",
+      description: "Meet people. Discover events. Work alongside a trusted community. Feel at home faster.",
+      ctaJoin: "Join the community",
+      ctaIdea: "Report an idea"
+    },
+    footer: {
+      brand: "UTC Barcelona",
+      tagline: "A place to feel at home in Barcelona.",
+      explore: "Explore",
+      links: "Links",
+      contact: "Contact",
+      builtWith: "Built with the community in Barcelona."
+    }
+  },
+  uk: {
+    nav: {
+      events: "Події",
+      referrals: "Реферали",
+      chats: "Чати",
+      about: "Про UTC",
+      join: "Долучитися",
+      joinCommunity: "Долучитися до спільноти",
+      backToHome: "Назад на головну",
+      submitCompany: "Додати компанію"
+    },
+    hero: {
+      eyebrow: "Українці та друзі в Барселоні",
+      title: "Спільнота, яку можна назвати своїм колом",
+      description: "UTC — це спільнота українців і друзів у Барселоні. Ми об’єднуємо людей із tech, бізнесу та креативних сфер через події, професійні чати й мережу контактів, побудовану на довірі.",
+      ctaJoin: "Долучитися до спільноти",
+      ctaEvents: "Переглянути події",
+      badge: "Теплі люди. Живі події. Практична спільнота.",
+      photo1: "Офлайн-події, заради яких хочеться вийти з дому",
+      photo2: "Додайте тут моменти зі спільноти",
+      photo2text: "Справжні люди, жива енергія, реальний зв’язок.",
+      photo3: "Реальне місце, а не просто груповий чат"
+    },
+    stats: {
+      eyebrow: "У цифрах",
+      title: "Що ми вже зробили разом",
+      founded: "рік заснування",
+      events: "подій спільноти",
+      people: "людей познайомилися офлайн",
+      perEvent: "середня знижка для спільноти"
+    },
+    features: {
+      eyebrow: "Чому UTC",
+      title: "Це більше, ніж просто спільнота",
+      description: "UTC поєднує людей, події та реальне спільне місце в Барселоні.",
+      networkTitle: "Своє коло",
+      networkText: "Познайомтеся з українцями з tech, бізнесу та креативних сфер. Без випадкових контактів — зі спільним контекстом і довірою.",
+      eventsTitle: "Живі події",
+      eventsText: "Від камерних зустрічей до великих зборів спільноти — офлайн, куди справді хочеться прийти.",
+      adviceTitle: "Поради по справі",
+      adviceText: "Практична допомога від людей, які вже проходили схожий шлях. Без шуму й пафосу — по суті.",
+      perksTitle: "Переваги Спільноти",
+      perksText: "Отримуйте знижки 15–50% на локальні події, товари та послуги, а іноді й безкоштовні квитки — усе це завдяки силі нашої спільноти."
+    },
+    events: {
+      eyebrow: "Найближчі події",
+      title: "Що буде далі",
+      description: "Мітапи, розмови, зустрічі та інші події спільноти в Барселоні.",
+      pastEvents: "Переглянути минулі події"
+    },
+    chats: {
+      eyebrow: "Долучайтеся до чатів за інтересами",
+      title: "Знайдіть своїх людей",
+      description: "UTC — це спільнота на довірі. Долучайтеся до професійних чатів, щоб знайомитися з фаундерами, інженерами та креативниками, які вирішують схожі задачі.",
+      mainTitle: "Головний чат UTC",
+      mainText: "Це центр спільноти. Тут ставлять запитання, діляться новинами, знайомляться й стежать за тим, що відбувається в UTC Barcelona.",
+      mainCta: "Увійти в головний чат",
+      designers: "Дизайнери",
+      designersText: "UI/UX, бренд і візуальні спеціалісти.",
+      engineers: "Інженери",
+      engineersText: "Backend, frontend, mobile та infra.",
+      product: "Продукт",
+      productText: "PM-и, аналітики та стратеги.",
+      chaos: "Chaos",
+      chaosText: "Офтоп, меми й усе інше не по темі.",
+      housing: "Житло",
+      housingText: "Квартири, кімнати, сусіди й корисні поради.",
+      digest: "Hub Digest",
+      digestText: "Щотижневі оновлення від UTC Hub.",
+      join: "Долучитися"
+    },
+    homeReferrals: {
+      eyebrow: "UTC Referrals",
+      title: "Не з нуля. Через реферал.",
+      description: "Учасники UTC можуть порекомендувати вас у компанії в Барселоні. У багатьох є локальні іспанські контракти — це часто полегшує адаптацію.",
+      viewCta: "Переглянути компанії",
+      addCta: "Додати свою компанію"
+    },
+    referralsPage: {
+      title: "Реферали в компанії",
+      subtitle: "Список компаній, де учасники UTC можуть допомогти з рефералом або дати контакт потрібної людини.",
+      description: "Подивіться відкриті позиції, знайдіть контактну людину й напишіть у зручний спосіб. Будь ласка, ставтеся з повагою: реферали тримаються на довірі, і не кожен запит можна підтримати.",
+      proTip: "Порада: перш ніж просити про реферал, переконайтеся, що ваше CV відповідає позиції, а зарплатні очікування реалістичні.",
+      searchPlaceholder: "Шукати компанію, людину або контакт...",
+      allMethods: "Усі способи",
+      showing: "Показано компаній: {count}",
+      clearFilters: "Скинути фільтри",
+      colCompany: "Компанія",
+      colPositions: "Відкриті позиції",
+      colContactPerson: "Контактна людина",
+      colWay: "Спосіб зв’язку",
+      colContact: "Контакт",
+      viewPositions: "Переглянути вакансії",
+      noPositions: "Посилання на вакансії немає",
+      noResults: "За вашим запитом нічого не знайдено.",
+      disclaimer: "UTC ділиться цими контактами, щоб спростити пошук можливостей усередині спільноти. Пишіть коротко, по суті й бережіть чужий час."
+    },
+    feedback: {
+      eyebrow: "Зворотний зв’язок",
+      title: "Допоможіть покращити UTC",
+      description: "UTC робиться разом зі спільнотою, а не окремо від неї.",
+      ideaTitle: "Запропонувати ідею",
+      ideaText: "Запропонуйте подію, формат, ініціативу, партнерство чи будь-яке інше покращення, яке вам здається доречним.",
+      issueTitle: "Повідомити про проблему",
+      issueText: "Помітили щось незрозуміле, зламане або таке, що працює не дуже добре? Напишіть нам.",
+      ideaCta: "Запропонувати ідею",
+      issueCta: "Повідомити про проблему",
+      formName: "Ваше ім'я",
+      formContact: "Контакт (Telegram / LinkedIn / Email)",
+      formMessage: "Ваше повідомлення...",
+      formCancel: "Скасувати",
+      formSubmit: "Відправити",
+      formSending: "Відправка...",
+      formSuccess: "Дякуємо! Ми отримали ваше повідомлення."
+    },
+    about: {
+      eyebrow: "Про UTC",
+      title: "Як усе почалося",
+      p1: "UTC почався у квітні 2024 року, коли Роман Назаров, Олексій Купін та Аліна Назарова — українські IT-фахівці в Барселоні — вирішили зібрати людей офлайн. Їхня перша подія в Glovo зібрала понад 120 людей, і з цього моменту почалася історія UTC.",
+      p2: "Ідея була простою: створити місце, де українці в Барселоні можуть трохи більше відчувати себе як удома. Місце, яке допомагає адаптуватися до життя в Іспанії, професійно рости, знайомитися з близькими по духу людьми та будувати нові змістовні зв’язки.",
+      p3: "Сьогодні UTC підтримує комітет людей, які допомагають спільноті розвиватися й стежать за тим, щоб вона залишалася теплою, надійною та живою:",
+      cofounder: "співзасновник"
+    },
+    joinFooter: {
+      eyebrow: "Долучайтеся до UTC",
+      title: "Неважливо, ви щойно приїхали чи живете тут уже роками — не обов’язково розбиратися з усім самому",
+      description: "Знайомтеся з людьми, приходьте на події, працюйте поруч із тими, кому можна довіряти, і швидше відчувайте себе своїм у Барселоні.",
+      ctaJoin: "Долучитися до спільноти",
+      ctaIdea: "Запропонувати ідею"
+    },
+    footer: {
+      brand: "UTC Barcelona",
+      tagline: "Місце, де в Барселоні легше відчути себе своїм.",
+      explore: "Розділи",
+      links: "Посилання",
+      contact: "Контакти",
+      builtWith: "Зроблено разом зі спільнотою в Барселоні."
+    }
+  }
+};
