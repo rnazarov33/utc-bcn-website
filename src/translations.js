@@ -29,7 +29,7 @@ export const translations = {
     },
     stats: {
       eyebrow: "Traction",
-      title: "What we’ve built together",
+      title: "Our journey in numbers",
       founded: "founded",
       events: "community events",
       people: "people connected offline",
@@ -145,7 +145,8 @@ export const translations = {
       p1: "UTC started in April 2024, when Roman Nazarov, Oleksiy Kupin, and Alina Nazarova — Ukrainian IT professionals in Barcelona — decided to gather people offline. Their first event at Glovo brought together more than 120 people, and that moment became the start of UTC.",
       p2: "The idea behind UTC was simple: create a place where Ukrainians in Barcelona could feel a little more at home. A place that helps people adapt to life in Spain, grow professionally, meet like-minded people, and build meaningful new connections.",
       p3: "Today, UTC is run by a committee of people who help guide the community and make sure it stays warm, trusted, and well cared for:",
-      cofounder: "co-founder"
+      cofounderMale: "co-founder",
+      cofounderFemale: "co-founder"
     },
     joinFooter: {
       eyebrow: "Join UTC",
@@ -194,7 +195,7 @@ export const translations = {
     },
     stats: {
       eyebrow: "У цифрах",
-      title: "Що ми вже зробили разом",
+      title: "Наш шлях у цифрах",
       founded: "рік заснування",
       events: "подій спільноти",
       people: "людей познайомилися офлайн",
@@ -310,7 +311,8 @@ export const translations = {
       p1: "UTC почався у квітні 2024 року, коли Роман Назаров, Олексій Купін та Аліна Назарова — українські IT-фахівці в Барселоні — вирішили зібрати людей офлайн. Їхня перша подія в Glovo зібрала понад 120 людей, і з цього моменту почалася історія UTC.",
       p2: "Ідея була простою: створити місце, де українці в Барселоні можуть трохи більше відчувати себе як удома. Місце, яке допомагає адаптуватися до життя в Іспанії, професійно рости, знайомитися з близькими по духу людьми та будувати нові змістовні зв’язки.",
       p3: "Сьогодні UTC підтримує комітет людей, які допомагають спільноті розвиватися й стежать за тим, щоб вона залишалася теплою, надійною та живою:",
-      cofounder: "співзасновник"
+      cofounderMale: "співзасновник",
+      cofounderFemale: "співзасновниця"
     },
     joinFooter: {
       eyebrow: "Долучайтеся до UTC",

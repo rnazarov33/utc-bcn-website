@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
 
@@ -20,9 +20,11 @@ export default function App() {
     localStorage.setItem('lang', lang);
   }, [lang]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     localStorage.setItem('theme', theme);
-    document.documentElement.classList.toggle('dark', theme === 'dark');
+    const isDark = theme === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    document.body.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = theme;
   }, [theme]);
 
@@ -130,7 +132,7 @@ export default function App() {
   };
 
   return (
-    <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
+    <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} ${theme === 'dark' ? 'dark' : ''} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
       <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} t={t} />
       {view === 'home' ? (
         <main>
@@ -300,7 +302,7 @@ function ThemeToggle({ theme, setTheme, t }) {
   return (
     <button
       type="button"
-      onClick={() => setTheme(isDark ? 'light' : 'dark')}
+      onClick={() => setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'))}
       className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-gray-200 bg-white text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
       aria-label={isDark ? t('nav.themeToLight') : t('nav.themeToDark')}
       title={isDark ? t('nav.themeToLight') : t('nav.themeToDark')}
@@ -924,8 +926,8 @@ function AboutSection({ t, lang }) {
           </p>
           <p className="mt-5 text-base leading-8 text-slate-700 dark:text-slate-300">
             {t('about.p3')}{' '}
-            {link('roman')} — {t('about.cofounder')},{' '}
-            {link('alina')} — {t('about.cofounder')},{' '}
+            {link('roman')} — {t('about.cofounderMale')},{' '}
+            {link('alina')} — {t('about.cofounderFemale')},{' '}
             {link('dima')},{' '}
             {link('volodymyr')},{' '}
             {link('sviat')},{' '}
