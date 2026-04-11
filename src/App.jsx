@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
-import { initAnalytics, trackPageView } from './lib/analytics';
+import { getHashPageView, initAnalytics, trackPageView } from './lib/analytics';
 
 export default function App() {
   const [view, setView] = useState('home');
@@ -42,6 +42,26 @@ export default function App() {
     const pageTitle = view === 'home' ? 'UTC Barcelona - Home' : 'UTC Barcelona - Referrals';
 
     trackPageView(pagePath, pageTitle);
+  }, [view]);
+
+  useEffect(() => {
+    if (view !== 'home') {
+      return undefined;
+    }
+
+    const trackHashChange = () => {
+      const hashPageView = getHashPageView();
+      if (hashPageView) {
+        trackPageView(hashPageView.pagePath, hashPageView.pageTitle);
+      }
+    };
+
+    window.addEventListener('hashchange', trackHashChange);
+    trackHashChange();
+
+    return () => {
+      window.removeEventListener('hashchange', trackHashChange);
+    };
   }, [view]);
 
   // Translation helper

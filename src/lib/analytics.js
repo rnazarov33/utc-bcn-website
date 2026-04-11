@@ -19,8 +19,8 @@ export function initAnalytics() {
   initialized = true;
 
   window.dataLayer = window.dataLayer || [];
-  window.gtag = window.gtag || function gtag(...args) {
-    window.dataLayer.push(args);
+  window.gtag = window.gtag || function gtag() {
+    window.dataLayer.push(arguments);
   };
 
   const existingScript = document.querySelector(`script[data-ga-id="${measurementId}"]`);
@@ -55,4 +55,20 @@ export function trackPageView(pagePath, pageTitle) {
     page_title: pageTitle,
     page_location: new URL(pagePath, window.location.origin).href,
   });
+}
+
+export function getHashPageView() {
+  if (!isBrowser()) {
+    return null;
+  }
+
+  const hash = window.location.hash.trim();
+  if (!hash || hash === '#top') {
+    return null;
+  }
+
+  return {
+    pagePath: `/${hash}`,
+    pageTitle: `UTC Barcelona - ${hash.slice(1)}`,
+  };
 }
