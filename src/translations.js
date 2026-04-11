@@ -21,7 +21,7 @@ export const translations = {
       descriptionEnd: "through events, professional circles, and trust-based networks.",
       ctaJoin: "Join the community",
       ctaEvents: "Explore events",
-      badge: "Warm people. Real events. Practical community.",
+      badge: "Warm people. Real events. Professional community.",
       photo1: "Offline events that feel worth leaving home for",
       photo2: "Add your community moments here",
       photo2text: "Real faces, real energy, real connection.",
@@ -52,7 +52,15 @@ export const translations = {
       eyebrow: "Upcoming events",
       title: "See what’s happening next",
       description: "Meetups, talks, gatherings, and community moments in Barcelona.",
-      pastEvents: "See past events"
+      pastEvents: "See past events",
+      ctaAll: "See past and next events",
+      inspirationEyebrow: "Past events inspiration",
+      inspirationTitle: "The energy we’ve already built together",
+      inspirationText: "These are posters from past UTC events. For the full upcoming and past schedule, open our Luma calendar.",
+      posterStripHint: "Drag to browse. Hover to pause the motion.",
+      carouselLive: "Live carousel",
+      carouselPaused: "Paused",
+      carouselDragging: "Dragging"
     },
     chats: {
       eyebrow: "Join high-trust circles",
@@ -153,7 +161,7 @@ export const translations = {
       title: "Whether you just arrived or have been here for years, you don’t have to figure it out alone",
       description: "Meet people. Discover events. Work alongside a trusted community. Feel at home faster.",
       ctaJoin: "Join the community",
-      ctaIdea: "Report an idea"
+      ctaIdea: "Share an idea"
     },
     footer: {
       brand: "UTC Barcelona",
@@ -187,7 +195,7 @@ export const translations = {
       descriptionEnd: "через події, професійні чати й мережу контактів, побудовану на довірі.",
       ctaJoin: "Долучитися до спільноти",
       ctaEvents: "Переглянути події",
-      badge: "Теплі люди. Живі події. Практична спільнота.",
+      badge: "Теплі люди. Живі події. Професійна спільнота.",
       photo1: "Офлайн-події, заради яких хочеться вийти з дому",
       photo2: "Додайте тут моменти зі спільноти",
       photo2text: "Справжні люди, жива енергія, реальний зв’язок.",
@@ -218,7 +226,15 @@ export const translations = {
       eyebrow: "Найближчі події",
       title: "Що буде далі",
       description: "Мітапи, розмови, зустрічі та інші події спільноти в Барселоні.",
-      pastEvents: "Переглянути минулі події"
+      pastEvents: "Переглянути минулі події",
+      ctaAll: "Переглянути минулі й наступні події",
+      inspirationEyebrow: "Натхнення з минулих подій",
+      inspirationTitle: "Енергія, яку ми вже створили разом",
+      inspirationText: "Це постери з минулих подій UTC. Повний календар наступних і минулих подій є в Luma.",
+      posterStripHint: "Свайпайте, щоб переглядати. Наведіть курсор, щоб зупинити рух.",
+      carouselLive: "Жива карусель",
+      carouselPaused: "Пауза",
+      carouselDragging: "Перетягування"
     },
     chats: {
       eyebrow: "Долучайтеся до чатів за інтересами",

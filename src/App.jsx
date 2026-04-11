@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
+import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from 'react';
 import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
 import { getHashPageView, initAnalytics, trackPageView } from './lib/analytics';
@@ -555,45 +555,297 @@ function FeatureSection({ features, t }) {
 }
 
 function EventsSection({ links, t }) {
+  const eventPosters = [
+    {
+      src: "/images/events/home-in-bcn.png",
+      alt: "UTC Barcelona event poster, Home in BCN",
+    },
+    {
+      src: "/images/events/utc-event-mobile-apps.avif",
+      alt: "UTC Barcelona event poster, Mobile Apps",
+    },
+    {
+      src: "/images/events/utc-event-data-decisions.avif",
+      alt: "UTC Barcelona event poster, Data and Decisions",
+    },
+    {
+      src: "/images/events/utc-event-dima-maleev.avif",
+      alt: "UTC Barcelona event poster, Dima Maleev",
+    },
+    {
+      src: "/images/events/utc-event-fuckup-night.avif",
+      alt: "UTC Barcelona event poster, Fuckup Night",
+    },
+    {
+      src: "/images/events/utc-event-product-marketing-ux.avif",
+      alt: "UTC Barcelona event poster, Product Marketing UX",
+    },
+    {
+      src: "/images/events/utc-event-generative-ai.avif",
+      alt: "UTC Barcelona event poster, Generative AI",
+    },
+    {
+      src: "/images/events/utc-event-leadership.avif",
+      alt: "UTC Barcelona event poster, Leadership",
+    },
+    {
+      src: "/images/events/utc-event-usyk-watchparty.avif",
+      alt: "UTC Barcelona event poster, Usyk watch party",
+    },
+    {
+      src: "/images/events/utc-event-community-photo-1.avif",
+      alt: "UTC Barcelona event poster",
+    },
+    {
+      src: "/images/events/utc-event-community-photo-2.avif",
+      alt: "UTC Barcelona event poster",
+    },
+  ];
+  const posterWall = [...eventPosters, ...eventPosters.slice(0, 6)];
+
   return (
     <section id="events" className="border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-          <div>
-            <SectionIntro
-              eyebrow={t('events.eyebrow')}
-              title={t('events.title')}
-              description={t('events.description')}
-            />
+        <SectionIntro
+          eyebrow={t('events.eyebrow')}
+          title={t('events.title')}
+          description={t('events.description')}
+        />
 
-            <div className="mt-6 flex flex-wrap gap-3">
-              <a
-                href="https://luma.com/utc-events?period=past"
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full border border-gray-200 bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition hover:border-slate-400 hover:bg-gray-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-600 dark:hover:bg-slate-800"
-              >
-                {t('events.pastEvents')}
-              </a>
+        <div className="mt-6">
+          <a
+            href={links.luma}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex rounded-full bg-brand px-5 py-3 text-sm font-semibold text-white transition hover:bg-brand-dark"
+          >
+            {t('events.ctaAll')}
+          </a>
+        </div>
+
+        <div className="relative mt-8 overflow-hidden rounded-[2rem] border border-slate-800/90 bg-[#030712] shadow-[0_28px_80px_rgba(2,6,23,0.75)]">
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute inset-0 grid grid-cols-3 gap-3 p-4 sm:grid-cols-4 lg:grid-cols-6 lg:gap-4 lg:p-6">
+              {posterWall.map((poster, index) => (
+                <div key={`wall-${poster.src}-${index}`} className={`overflow-hidden rounded-xl ${index % 7 === 0 ? 'lg:col-span-2' : ''}`}>
+                  <img
+                    src={poster.src}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover [filter:brightness(.52)_saturate(.9)]"
+                  />
+                </div>
+              ))}
             </div>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_22%,rgba(99,91,255,0.24),transparent_52%)]" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#02050d] via-[#02050df2] to-[#02050da8]" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#02050d] via-[#02050d7a] to-transparent" />
+            <div className="absolute inset-0 [box-shadow:inset_0_0_160px_rgba(2,6,23,0.95)]" />
           </div>
 
-          <div className="overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-950">
-            <iframe
-              src="https://luma.com/embed/calendar/cal-XVqyCLhYYcyGZ8v/events"
-              width="100%"
-              height="600"
-              frameBorder="0"
-              style={{ border: "none" }}
-              allowFullScreen=""
-              aria-hidden="false"
-              tabIndex="0"
-            ></iframe>
+          <div className="relative z-10 px-4 py-5 sm:px-7 sm:py-7 lg:px-8 lg:py-8">
+            <div className="pointer-events-none absolute left-4 top-4 z-20 rounded-full border border-white/10 bg-slate-950/45 px-3 py-1 text-[11px] font-medium uppercase tracking-[0.18em] text-slate-300 backdrop-blur sm:left-7 sm:top-7">
+              {t('events.inspirationEyebrow')}
+            </div>
+
+            <div className="relative h-[360px] sm:h-[430px] lg:h-[520px]">
+              <PosterCarousel posters={eventPosters} />
+            </div>
           </div>
         </div>
       </div>
     </section>
   );
+}
+
+function PosterCarousel({ posters }) {
+  const stageRef = useRef(null);
+  const frameRef = useRef(null);
+  const lastFrameRef = useRef(0);
+  const offsetRef = useRef(0);
+  const pauseRef = useRef(false);
+  const dragRef = useRef({
+    active: false,
+    pointerId: null,
+    startX: 0,
+    startOffset: 0,
+  });
+  const [offset, setOffset] = useState(0);
+  const [stageWidth, setStageWidth] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  useEffect(() => {
+    if (!stageRef.current) return undefined;
+
+    const observer = new ResizeObserver(([entry]) => {
+      setStageWidth(entry.contentRect.width);
+    });
+
+    observer.observe(stageRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const speed = 0.11;
+
+    const animate = (timestamp) => {
+      if (!lastFrameRef.current) {
+        lastFrameRef.current = timestamp;
+      }
+
+      const deltaMs = Math.min(timestamp - lastFrameRef.current, 34);
+      lastFrameRef.current = timestamp;
+
+      if (!pauseRef.current && !dragRef.current.active) {
+        const nextOffset = normalizePosterOffset(offsetRef.current + (deltaMs / 1000) * speed, posters.length);
+        offsetRef.current = nextOffset;
+        setOffset(nextOffset);
+      }
+
+      frameRef.current = window.requestAnimationFrame(animate);
+    };
+
+    frameRef.current = window.requestAnimationFrame(animate);
+
+    return () => {
+      if (frameRef.current) {
+        window.cancelAnimationFrame(frameRef.current);
+      }
+    };
+  }, [posters.length]);
+
+  const setPausedState = (nextPaused) => {
+    pauseRef.current = nextPaused;
+    lastFrameRef.current = performance.now();
+  };
+
+  const handlePointerDown = (event) => {
+    if (!stageRef.current) return;
+
+    dragRef.current = {
+      active: true,
+      pointerId: event.pointerId,
+      startX: event.clientX,
+      startOffset: offsetRef.current,
+    };
+    setIsDragging(true);
+    setPausedState(true);
+    stageRef.current.setPointerCapture(event.pointerId);
+  };
+
+  const handlePointerMove = (event) => {
+    const dragState = dragRef.current;
+    if (!dragState.active || dragState.pointerId !== event.pointerId || !stageWidth) return;
+
+    const spacing = Math.max(stageWidth * 0.23, 92);
+    const deltaX = event.clientX - dragState.startX;
+    const nextOffset = normalizePosterOffset(dragState.startOffset - deltaX / spacing, posters.length);
+    offsetRef.current = nextOffset;
+    setOffset(nextOffset);
+  };
+
+  const finishDrag = (pointerId) => {
+    const dragState = dragRef.current;
+    if (!dragState.active || dragState.pointerId !== pointerId) return;
+
+    dragRef.current = {
+      active: false,
+      pointerId: null,
+      startX: 0,
+      startOffset: offsetRef.current,
+    };
+    setIsDragging(false);
+    setPausedState(false);
+  };
+
+  const baseCardWidth = clamp(stageWidth * 0.46 || 260, 170, 320);
+  const spacing = Math.max(stageWidth * 0.23 || 140, 92);
+  const visiblePosters = posters
+    .map((poster, index) => {
+      const relativePosition = getWrappedPosterDelta(index, offset, posters.length);
+      const distanceFromCenter = Math.abs(relativePosition);
+
+      if (distanceFromCenter > 4.4) return null;
+
+      const clampedDistance = Math.min(distanceFromCenter, 4);
+      const scale = clamp(1.08 - clampedDistance * 0.15, 0.56, 1.08);
+      const opacity = clamp(1 - clampedDistance * 0.16, 0, 1);
+      const brightness = clamp(1.08 - clampedDistance * 0.14, 0.58, 1.08);
+      const saturation = clamp(1.04 - clampedDistance * 0.07, 0.72, 1.08);
+      const blur = distanceFromCenter > 2.7 ? (distanceFromCenter - 2.7) * 0.7 : 0;
+      const translateX = relativePosition * spacing;
+      const translateY = clampedDistance * 14 + Math.min(clampedDistance * clampedDistance * 4, 30);
+      const rotation = relativePosition * 7;
+      const zIndex = Math.round((10 - clampedDistance) * 10);
+
+      return {
+        ...poster,
+        style: {
+          left: '50%',
+          top: '48%',
+          width: `${baseCardWidth}px`,
+          zIndex,
+          opacity,
+          filter: `brightness(${brightness}) saturate(${saturation}) blur(${blur}px)`,
+          transform: `translate(-50%, -50%) translate3d(${translateX}px, ${translateY}px, 0) scale(${scale}) rotate(${rotation}deg)`,
+        },
+        isFocused: distanceFromCenter < 0.5,
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.style.zIndex - b.style.zIndex);
+
+  return (
+    <div
+      ref={stageRef}
+      className={`absolute inset-0 overflow-hidden ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+      style={{ touchAction: 'pan-y' }}
+      onMouseEnter={() => !dragRef.current.active && setPausedState(true)}
+      onMouseLeave={() => !dragRef.current.active && setPausedState(false)}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={(event) => finishDrag(event.pointerId)}
+      onPointerCancel={(event) => finishDrag(event.pointerId)}
+      onLostPointerCapture={(event) => finishDrag(event.pointerId)}
+    >
+      {visiblePosters.map((poster) => (
+        <div
+          key={poster.src}
+          className={`absolute aspect-square overflow-hidden rounded-2xl border border-white/18 bg-[#020617] shadow-[0_22px_45px_rgba(2,6,23,0.62)] will-change-transform ${
+            poster.isFocused ? 'shadow-[0_24px_56px_rgba(2,6,23,0.72)]' : ''
+          }`}
+          style={poster.style}
+        >
+          <img
+            src={poster.src}
+            alt={poster.alt}
+            loading="lazy"
+            draggable="false"
+            className="h-full w-full bg-[#020617] object-contain p-2 select-none sm:p-3"
+          />
+        </div>
+      ))}
+
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#030712] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#030712] to-transparent" />
+      <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#030712] to-transparent" />
+    </div>
+  );
+}
+
+function normalizePosterOffset(value, count) {
+  return ((value % count) + count) % count;
+}
+
+function getWrappedPosterDelta(index, offset, count) {
+  let delta = index - offset;
+  if (delta > count / 2) delta -= count;
+  if (delta < -count / 2) delta += count;
+  return delta;
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function JoinChatsSection({ chats, communityRulesHref, t }) {
