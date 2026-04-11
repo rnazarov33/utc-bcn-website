@@ -30,4 +30,8 @@ jobs:
           script: |
             set -euo pipefail
             cd /var/www/utc-productbootcamps/repo
+            sudo rm -rf node_modules dist
+            git fetch --prune origin
+            git checkout main
+            git reset --hard "$GITHUB_SHA"
             bash scripts/deploy-utc-productbootcamps.sh "$GITHUB_SHA"
