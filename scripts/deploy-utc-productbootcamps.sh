@@ -6,8 +6,16 @@ REPO_DIR="${REPO_DIR:-/var/www/utc-productbootcamps/repo}"
 LIVE_DIR="${LIVE_DIR:-/var/www/utc-productbootcamps/current}"
 BRANCH="${BRANCH:-main}"
 TARGET_SHA="${1:-${TARGET_SHA:-}}"
+ENV_FILE="${ENV_FILE:-.env.production}"
 
 cd "$REPO_DIR"
+
+if [[ -f "$ENV_FILE" ]]; then
+  set -a
+  # Load build-time environment variables such as VITE_GA_MEASUREMENT_ID.
+  source "$ENV_FILE"
+  set +a
+fi
 
 git fetch --prune origin
 git checkout "$BRANCH"
@@ -25,4 +33,3 @@ mkdir -p "$LIVE_DIR"
 rsync -a --delete dist/ "$LIVE_DIR/"
 
 sudo systemctl reload nginx
-
