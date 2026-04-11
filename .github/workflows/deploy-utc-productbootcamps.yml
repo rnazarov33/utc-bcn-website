@@ -29,9 +29,17 @@ jobs:
           envs: GITHUB_SHA
           script: |
             set -euo pipefail
-            cd /var/www/utc-productbootcamps/repo
-            sudo rm -rf node_modules dist
-            git fetch --prune origin
-            git checkout main
-            git reset --hard "$GITHUB_SHA"
-            bash scripts/deploy-utc-productbootcamps.sh "$GITHUB_SHA"
+            REPO_DIR="/var/www/utc-productbootcamps/repo"
+            ENV_FILE_PATH="$REPO_DIR/.env.production"
+            DEPLOY_TMP_DIR="$(mktemp -d /tmp/utc-productbootcamps.XXXXXX)"
+
+            cleanup() {
+              git -C "$REPO_DIR" worktree remove --force "$DEPLOY_TMP_DIR" 2>/dev/null || rm -rf "$DEPLOY_TMP_DIR"
+            }
+
+            trap cleanup EXIT
+
+            git -C "$REPO_DIR" fetch --prune origin
+            git -C "$REPO_DIR" worktree add --force --detach "$DEPLOY_TMP_DIR" "$GITHUB_SHA"
+
+            ENV_FILE="$ENV_FILE_PATH" REPO_DIR="$DEPLOY_TMP_DIR" bash "$DEPLOY_TMP_DIR/scripts/deploy-utc-productbootcamps.sh" "$GITHUB_SHA"

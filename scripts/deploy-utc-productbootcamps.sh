@@ -17,17 +17,20 @@ if [[ -f "$ENV_FILE" ]]; then
   set +a
 fi
 
-# Previous deploys or manual server work can leave root-owned build artifacts in
-# the repo, which makes `git reset --hard` fail. Clear generated directories
-# first so the checkout step stays reproducible.
-sudo rm -rf node_modules dist
+# Clear generated directories if they exist. In the production workflow we build
+# from a temporary worktree, so these files should be user-owned and removable
+# without sudo.
+rm -rf node_modules dist 2>/dev/null || true
+if [[ -e node_modules || -e dist ]]; then
+  sudo -n rm -rf node_modules dist 2>/dev/null || true
+fi
 
 git fetch --prune origin
-git checkout "$BRANCH"
 
 if [[ -n "$TARGET_SHA" ]]; then
   git reset --hard "$TARGET_SHA"
 else
+  git checkout "$BRANCH"
   git reset --hard "origin/$BRANCH"
 fi
 
