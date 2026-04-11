@@ -17,6 +17,11 @@ if [[ -f "$ENV_FILE" ]]; then
   set +a
 fi
 
+# Previous deploys or manual server work can leave root-owned build artifacts in
+# the repo, which makes `git reset --hard` fail. Clear generated directories
+# first so the checkout step stays reproducible.
+sudo rm -rf node_modules dist
+
 git fetch --prune origin
 git checkout "$BRANCH"
 
