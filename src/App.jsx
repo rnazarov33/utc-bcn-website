@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect, useCallback } from 'react';
 import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
+import { initAnalytics, trackPageView } from './lib/analytics';
 
 export default function App() {
   const [view, setView] = useState('home');
@@ -30,6 +31,17 @@ export default function App() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+  }, [view]);
+
+  useEffect(() => {
+    initAnalytics();
+  }, []);
+
+  useEffect(() => {
+    const pagePath = view === 'home' ? '/' : '/referrals';
+    const pageTitle = view === 'home' ? 'UTC Barcelona - Home' : 'UTC Barcelona - Referrals';
+
+    trackPageView(pagePath, pageTitle);
   }, [view]);
 
   // Translation helper

@@ -2,3 +2,4 @@ node_modules/
 dist/
 utc-rules/
 .DS_Store
+.env
