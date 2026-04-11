@@ -7,6 +7,12 @@ LIVE_DIR="${LIVE_DIR:-/var/www/utc-productbootcamps/current}"
 BRANCH="${BRANCH:-main}"
 TARGET_SHA="${1:-${TARGET_SHA:-}}"
 ENV_FILE="${ENV_FILE:-.env.production}"
+DEPLOY_ROOT="${DEPLOY_ROOT:-$(dirname "$LIVE_DIR")}"
+RELEASES_DIR="${RELEASES_DIR:-$DEPLOY_ROOT/releases}"
+DEPLOY_ID="${TARGET_SHA:-$(date +%s)}"
+STAGING_DIR="${STAGING_DIR:-$RELEASES_DIR/.stage-$DEPLOY_ID}"
+BACKUP_DIR="${BACKUP_DIR:-$RELEASES_DIR/backup-$(date +%s)}"
+POST_DEPLOY_RELOAD_CMD="${POST_DEPLOY_RELOAD_CMD:-}"
 
 cd "$REPO_DIR"
 
@@ -37,7 +43,17 @@ fi
 npm ci --no-audit --no-fund
 npm run build
 
-mkdir -p "$LIVE_DIR"
-rsync -a --delete dist/ "$LIVE_DIR/"
+mkdir -p "$RELEASES_DIR"
+rm -rf "$STAGING_DIR"
+mkdir -p "$STAGING_DIR"
+rsync -a --delete dist/ "$STAGING_DIR/"
 
-sudo systemctl reload nginx
+if [[ -e "$LIVE_DIR" ]]; then
+  mv "$LIVE_DIR" "$BACKUP_DIR"
+fi
+
+mv "$STAGING_DIR" "$LIVE_DIR"
+
+if [[ -n "$POST_DEPLOY_RELOAD_CMD" ]]; then
+  bash -lc "$POST_DEPLOY_RELOAD_CMD"
+fi
