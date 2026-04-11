@@ -3,23 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="/images/logo-light.png" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data: https:; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; frame-src https://luma.com; form-action 'self' mailto: https://tally.so; upgrade-insecure-requests" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), interest-cohort=()" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UTC Barcelona - A place to feel at home</title>
     <meta name="description" content="UTC is a community of Ukrainians and friends in Barcelona — connecting people across tech, business, and creative fields through events and a shared hub." />
-    <script>
-      (() => {
-        const savedTheme = localStorage.getItem('theme');
-        const theme = savedTheme === 'light' || savedTheme === 'dark'
-          ? savedTheme
-          : (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', theme === 'dark');
-        document.documentElement.style.colorScheme = theme;
-        document.body?.classList.toggle('dark', theme === 'dark');
-      })();
-    </script>
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
