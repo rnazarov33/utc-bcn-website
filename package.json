@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "ga:report": "GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-$HOME/.config/utc-bcn/ga-service-account.json} node scripts/ga4-daily-report.mjs",
+    "ga:report:telegram": "GOOGLE_APPLICATION_CREDENTIALS=${GOOGLE_APPLICATION_CREDENTIALS:-$HOME/.config/utc-bcn/ga-service-account.json} node scripts/ga4-daily-report.mjs --telegram"
   },
   "dependencies": {
     "react": "^18.3.1",
