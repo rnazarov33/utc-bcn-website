@@ -6,9 +6,20 @@ from ga4_client import DailyReport
 
 
 def format_report(report: DailyReport) -> str:
+    if not report.channels and not any(
+        (
+            report.totals.sessions,
+            report.totals.total_users,
+            report.totals.active_users,
+            report.totals.key_events,
+            report.totals.purchase_revenue,
+        )
+    ):
+        return f"GA4 {report.report_date}\nYesterday returned no rows."
+
     totals = report.totals
     lines = [
-        "GA4 yesterday",
+        f"GA4 {report.report_date}",
         f"Sessions: {_format_int(totals.sessions)}",
         f"Unique users: {_format_int(totals.total_users)}",
         f"Active users: {_format_int(totals.active_users)}",
