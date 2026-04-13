@@ -1,0 +1,4 @@
+interface:
+  display_name: "GA4 Daily Report"
+  short_description: "Repo-local GA4 to Telegram workflow"
+  default_prompt: "Use $ga4-daily-report to run or update the daily GA4-to-Telegram report workflow."
