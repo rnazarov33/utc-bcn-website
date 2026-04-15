@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   deploy:
-    if: vars.UTC_AUTODEPLOY_ENABLED == 'true'
+    if: vars.UTC_AUTODEPLOY_ENABLED != 'false'
     runs-on: ubuntu-latest
     permissions:
       contents: read
