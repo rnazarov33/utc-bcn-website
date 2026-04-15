@@ -30,6 +30,16 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
     setFilterMethod('All');
   };
 
+  const normalizeExternalHref = (value) => {
+    const trimmedValue = value?.trim();
+
+    if (!trimmedValue) return '';
+    if (/^https?:\/\//i.test(trimmedValue)) return trimmedValue;
+    if (/^[\w.-]+\.[a-z]{2,}(\/.*)?$/i.test(trimmedValue)) return `https://${trimmedValue}`;
+
+    return trimmedValue;
+  };
+
   const formatContactLink = (type, value) => {
     // Handle multiple contacts split by /
     const parts = value.split(' / ').map(p => p.trim());
@@ -188,9 +198,9 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                         {item.company}
                       </td>
                       <td className="px-6 py-5 text-sm">
-                        {item.positionsOpen ? (
+                        {normalizeExternalHref(item.positionsOpen) ? (
                           <a
-                            href={item.positionsOpen}
+                            href={normalizeExternalHref(item.positionsOpen)}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-brand hover:text-brand-dark hover:underline"
@@ -246,9 +256,9 @@ export default function CompanyReferrals({ onBack, links, lang, t }) {
                       <span className="text-sm">{formatContactLink(item.wayToContact, item.contact)}</span>
                     </div>
                     <div>
-                      {item.positionsOpen ? (
+                      {normalizeExternalHref(item.positionsOpen) ? (
                         <a
-                          href={item.positionsOpen}
+                          href={normalizeExternalHref(item.positionsOpen)}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="mt-2 inline-flex items-center text-sm font-semibold text-brand"

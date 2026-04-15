@@ -77,13 +77,6 @@ export const referralsData = [
     "contact": "jevgen.tarasenko@gmail.com"
   },
   {
-    "company": "Fever",
-    "positionsOpen": "https://careers.feverup.com/jobs/",
-    "pointOfContact": "Anastasia Lisova",
-    "wayToContact": "Telegram",
-    "contact": "@lisovanastasia"
-  },
-  {
     "company": "Gameloft",
     "positionsOpen": "https://www.gameloft.com/jobs",
     "pointOfContact": "Volodymyr Manoilo",
