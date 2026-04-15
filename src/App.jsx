@@ -3,6 +3,11 @@ import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
 import { getHashPageView, initAnalytics, trackPageView } from './lib/analytics';
 
+const getAnchorSelector = (href = '') => {
+  const hashIndex = href.indexOf('#');
+  return hashIndex >= 0 ? href.slice(hashIndex) : '';
+};
+
 export default function App() {
   const [view, setView] = useState('home');
   const [lang, setLang] = useState(() => {
@@ -76,11 +81,11 @@ export default function App() {
   }, [lang]);
 
   const links = {
-    join: "#community",
-    events: "#events",
-    referrals: "#referrals",
-    rules: "#rules",
-    about: "#about",
+    join: "/#community",
+    events: "/#events",
+    referrals: "/#referrals",
+    rules: "/#rules",
+    about: "/#about",
     telegram: "https://t.me/+sksFxTZOGEQ4MTQ6",
     instagram: "https://www.instagram.com/utc.barca/",
     linkedin: "https://www.linkedin.com/company/utc-barcelona/",
@@ -89,11 +94,36 @@ export default function App() {
     issueForm: "https://tally.so/r/your-issue-form",
     referralForm: "https://docs.google.com/forms/d/e/1FAIpQLSdAH8n78Clqrqz9P7mjZ8qlViqQqu9nKsdoU8tAIdOmVnzCIw/viewform",
     email: "mailto:hello@utcbarcelona.com",
-    chats: "#community",
+    chats: "/#community",
     rulesRepo: "https://github.com/rnazarov33/utc-rules",
   };
 
   const communityRulesHref = links.rulesRepo;
+
+  const navigateToAnchor = useCallback((href) => {
+    const selector = getAnchorSelector(href);
+
+    if (!selector) return;
+
+    const scrollToTarget = () => {
+      const target = document.querySelector(selector);
+
+      if (!target) return;
+
+      window.history.replaceState(null, '', selector);
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
+
+    if (view !== 'home') {
+      setView('home');
+      requestAnimationFrame(() => {
+        requestAnimationFrame(scrollToTarget);
+      });
+      return;
+    }
+
+    scrollToTarget();
+  }, [view]);
 
   const stats = [
     { value: "2024", label: t('stats.founded') },
@@ -165,7 +195,7 @@ export default function App() {
 
   return (
     <div className={`${lang === 'uk' ? 'font-sansUk' : 'font-sansEn'} ${theme === 'dark' ? 'dark' : ''} min-h-screen bg-white text-slate-900 transition-colors duration-300 dark:bg-slate-950 dark:text-slate-100 selection:bg-brand selection:text-white`}>
-      <Header links={links} setView={setView} currentView={view} lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} t={t} />
+      <Header links={links} setView={setView} currentView={view} navigateToAnchor={navigateToAnchor} lang={lang} setLang={setLang} theme={theme} setTheme={setTheme} t={t} />
       {view === 'home' ? (
         <main>
           <Hero links={links} t={t} />
@@ -181,12 +211,12 @@ export default function App() {
       ) : (
         <CompanyReferrals onBack={() => setView('home')} links={links} lang={lang} t={t} />
       )}
-      <Footer links={links} communityRulesHref={communityRulesHref} t={t} />
+      <Footer links={links} currentView={view} navigateToAnchor={navigateToAnchor} communityRulesHref={communityRulesHref} t={t} />
     </div>
   );
 }
 
-function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t }) {
+function Header({ links, setView, currentView, navigateToAnchor, lang, setLang, theme, setTheme, t }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems = [
     { label: t('nav.events'), href: links.events, type: 'anchor' },
@@ -201,18 +231,10 @@ function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t
       e.preventDefault();
       setMobileMenuOpen(false);
       setView(item.view);
-    } else if (currentView !== 'home') {
+    } else {
       e.preventDefault();
       setMobileMenuOpen(false);
-      setView('home');
-      requestAnimationFrame(() => {
-        const target = document.querySelector(item.href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
-      });
-    } else {
-      setMobileMenuOpen(false);
+      navigateToAnchor(item.href);
     }
   };
 
@@ -220,8 +242,8 @@ function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a
-          href="#top"
-          onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setView('home'); window.scrollTo(0, 0); }}
+          href="/#top"
+          onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setView('home'); window.history.replaceState(null, '', '#top'); window.scrollTo(0, 0); }}
           className="flex items-center"
         >
           <img
@@ -268,6 +290,10 @@ function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t
 
           <a
             href={links.join}
+            onClick={(e) => {
+              e.preventDefault();
+              navigateToAnchor(links.join);
+            }}
             className="hidden rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-white transition hover:bg-brand-dark sm:block"
           >
             {t('nav.joinCommunity')}
@@ -292,7 +318,11 @@ function Header({ links, setView, currentView, lang, setLang, theme, setTheme, t
             ))}
             <a
               href={links.join}
-              onClick={() => setMobileMenuOpen(false)}
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileMenuOpen(false);
+                navigateToAnchor(links.join);
+              }}
               className="mt-2 rounded-lg bg-brand px-4 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-dark"
             >
               {t('nav.joinCommunity')}
@@ -1260,7 +1290,14 @@ function JoinSection({ links, t }) {
   );
 }
 
-function Footer({ links, communityRulesHref, t }) {
+function Footer({ links, currentView, navigateToAnchor, communityRulesHref, t }) {
+  const handleAnchorClick = (e, href) => {
+    if (currentView !== 'home') {
+      e.preventDefault();
+      navigateToAnchor(href);
+    }
+  };
+
   return (
     <footer className="border-t border-gray-100 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 md:grid-cols-2 lg:grid-cols-3 lg:px-8">
@@ -1273,9 +1310,9 @@ function Footer({ links, communityRulesHref, t }) {
         <div>
           <div className="text-sm font-semibold text-slate-950 dark:text-white">{t('footer.explore')}</div>
           <div className="mt-3 flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-400">
-            <a href={links.events}>{t('nav.events')}</a>
-            <a href={links.referrals}>{t('nav.referrals')}</a>
-            <a href={links.about}>{t('nav.about')}</a>
+            <a href={links.events} onClick={(e) => handleAnchorClick(e, links.events)}>{t('nav.events')}</a>
+            <a href={links.referrals} onClick={(e) => handleAnchorClick(e, links.referrals)}>{t('nav.referrals')}</a>
+            <a href={links.about} onClick={(e) => handleAnchorClick(e, links.about)}>{t('nav.about')}</a>
           </div>
         </div>
         <div>
