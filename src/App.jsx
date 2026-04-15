@@ -3,13 +3,17 @@ import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
 import { getHashPageView, initAnalytics, trackPageView } from './lib/analytics';
 
-const getAnchorSelector = (href = '') => {
+const REFERRALS_HASH = '#referrals';
+
+const getAnchorHash = (href = '') => {
   const hashIndex = href.indexOf('#');
   return hashIndex >= 0 ? href.slice(hashIndex) : '';
 };
 
 export default function App() {
-  const [view, setView] = useState('home');
+  const [view, setView] = useState(() => (
+    typeof window !== 'undefined' && window.location.hash === REFERRALS_HASH ? 'referrals' : 'home'
+  ));
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('lang');
     if (saved) return saved;
@@ -33,10 +37,6 @@ export default function App() {
     document.body.classList.toggle('dark', isDark);
     document.documentElement.style.colorScheme = theme;
   }, [theme]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [view]);
 
   useEffect(() => {
     initAnalytics();
@@ -81,11 +81,11 @@ export default function App() {
   }, [lang]);
 
   const links = {
-    join: "/#community",
-    events: "/#events",
-    referrals: "/#referrals",
-    rules: "/#rules",
-    about: "/#about",
+    join: "#community",
+    events: "#events",
+    referrals: REFERRALS_HASH,
+    rules: "#rules",
+    about: "#about",
     telegram: "https://t.me/+sksFxTZOGEQ4MTQ6",
     instagram: "https://www.instagram.com/utc.barca/",
     linkedin: "https://www.linkedin.com/company/utc-barcelona/",
@@ -94,36 +94,107 @@ export default function App() {
     issueForm: "https://tally.so/r/your-issue-form",
     referralForm: "https://docs.google.com/forms/d/e/1FAIpQLSdAH8n78Clqrqz9P7mjZ8qlViqQqu9nKsdoU8tAIdOmVnzCIw/viewform",
     email: "mailto:hello@utcbarcelona.com",
-    chats: "/#community",
+    chats: "#community",
     rulesRepo: "https://github.com/rnazarov33/utc-rules",
   };
 
   const communityRulesHref = links.rulesRepo;
 
-  const navigateToAnchor = useCallback((href) => {
-    const selector = getAnchorSelector(href);
+  const scrollToAnchor = useCallback((hash, behavior = 'smooth') => {
+    if (!hash || hash === '#top') {
+      window.scrollTo({ top: 0, behavior });
+      return true;
+    }
 
-    if (!selector) return;
+    const target = document.querySelector(hash);
 
-    const scrollToTarget = () => {
-      const target = document.querySelector(selector);
+    if (!target) return false;
 
-      if (!target) return;
+    target.scrollIntoView({ behavior, block: 'start' });
+    return true;
+  }, []);
 
-      window.history.replaceState(null, '', selector);
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const navigateToAnchor = useCallback((href, behavior = 'smooth') => {
+    const hash = getAnchorHash(href);
+
+    if (!hash) return;
+
+    if (hash === REFERRALS_HASH) {
+      setView('referrals');
+
+      if (window.location.hash !== hash) {
+        window.location.hash = hash;
+      } else {
+        window.scrollTo({ top: 0, behavior });
+      }
+
+      return;
+    }
+
+    const openAnchor = () => {
+      if (hash === '#top') {
+        window.scrollTo({ top: 0, behavior });
+        return;
+      }
+
+      scrollToAnchor(hash, behavior);
     };
 
     if (view !== 'home') {
       setView('home');
-      requestAnimationFrame(() => {
-        requestAnimationFrame(scrollToTarget);
-      });
+
+      if (window.location.hash !== hash) {
+        window.location.hash = hash;
+      } else {
+        requestAnimationFrame(() => {
+          requestAnimationFrame(openAnchor);
+        });
+      }
+
       return;
     }
 
-    scrollToTarget();
-  }, [view]);
+    if (window.location.hash !== hash) {
+      window.location.hash = hash;
+    } else {
+      openAnchor();
+    }
+  }, [scrollToAnchor, view]);
+
+  useEffect(() => {
+    const syncViewWithHash = (behavior = 'auto') => {
+      const hash = window.location.hash.trim();
+
+      if (hash === REFERRALS_HASH) {
+        setView('referrals');
+        window.scrollTo({ top: 0, behavior });
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        setView('home');
+
+        if (!hash || hash === '#top') {
+          window.scrollTo({ top: 0, behavior });
+          return;
+        }
+
+        scrollToAnchor(hash, behavior);
+      });
+    };
+
+    syncViewWithHash('auto');
+
+    const handleHashNavigation = () => {
+      syncViewWithHash('smooth');
+    };
+
+    window.addEventListener('hashchange', handleHashNavigation);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHashNavigation);
+    };
+  }, [scrollToAnchor]);
 
   const stats = [
     { value: "2024", label: t('stats.founded') },
@@ -203,13 +274,13 @@ export default function App() {
           <FeatureSection features={features} t={t} />
           <EventsSection links={links} t={t} />
           <JoinChatsSection chats={communityChats} communityRulesHref={communityRulesHref} t={t} />
-          <ReferralsSection links={links} setView={setView} t={t} />
+          <ReferralsSection links={links} navigateToAnchor={navigateToAnchor} t={t} />
           <AboutSection t={t} lang={lang} />
           <FeedbackSection links={links} t={t} />
           <JoinSection links={links} t={t} />
         </main>
       ) : (
-        <CompanyReferrals onBack={() => setView('home')} links={links} lang={lang} t={t} />
+        <CompanyReferrals onBack={() => navigateToAnchor('#top')} links={links} lang={lang} t={t} />
       )}
       <Footer links={links} currentView={view} navigateToAnchor={navigateToAnchor} communityRulesHref={communityRulesHref} t={t} />
     </div>
@@ -220,30 +291,24 @@ function Header({ links, setView, currentView, navigateToAnchor, lang, setLang, 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navItems = [
     { label: t('nav.events'), href: links.events, type: 'anchor' },
-    { label: t('nav.referrals'), href: '#', type: 'route', view: 'referrals' },
+    { label: t('nav.referrals'), href: links.referrals, type: 'anchor' },
     { label: t('nav.chats'), href: links.chats, type: 'anchor' },
     { label: t('nav.rules'), href: links.rules, type: 'anchor' },
     { label: t('nav.about'), href: links.about, type: 'anchor' },
   ];
 
   const handleNavClick = (e, item) => {
-    if (item.type === 'route') {
-      e.preventDefault();
-      setMobileMenuOpen(false);
-      setView(item.view);
-    } else {
-      e.preventDefault();
-      setMobileMenuOpen(false);
-      navigateToAnchor(item.href);
-    }
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    navigateToAnchor(item.href);
   };
 
   return (
     <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur transition-colors dark:border-slate-800 dark:bg-slate-950/90">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         <a
-          href="/#top"
-          onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setView('home'); window.history.replaceState(null, '', '#top'); window.scrollTo(0, 0); }}
+          href="#top"
+          onClick={(e) => { e.preventDefault(); setMobileMenuOpen(false); setView('home'); navigateToAnchor('#top', 'smooth'); }}
           className="flex items-center"
         >
           <img
@@ -260,8 +325,7 @@ function Header({ links, setView, currentView, navigateToAnchor, lang, setLang, 
                 key={item.label}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item)}
-                className={`text-sm font-medium transition hover:text-slate-950 dark:hover:text-white ${item.type === 'route' && currentView === item.view ? 'text-brand' : 'text-slate-500 dark:text-slate-400'
-                  }`}
+                className="text-sm font-medium text-slate-500 transition hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
               >
                 {item.label}
               </a>
@@ -634,7 +698,7 @@ function EventsSection({ links, t }) {
   const posterWall = [...eventPosters, ...eventPosters.slice(0, 6)];
 
   return (
-    <section id="events" className="border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
+    <section id="events" className="scroll-mt-24 border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionIntro
           eyebrow={t('events.eyebrow')}
@@ -880,7 +944,7 @@ function clamp(value, min, max) {
 
 function JoinChatsSection({ chats, communityRulesHref, t }) {
   return (
-    <section id="community" className="border-t border-gray-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
+    <section id="community" className="scroll-mt-24 border-t border-gray-200 bg-white transition-colors dark:border-slate-800 dark:bg-slate-950">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <SectionIntro
         eyebrow={t('chats.eyebrow')}
@@ -1019,9 +1083,9 @@ function CommunityRulesNotice({ communityRulesHref, t }) {
   );
 }
 
-function ReferralsSection({ links, setView, t }) {
+function ReferralsSection({ links, navigateToAnchor, t }) {
   return (
-    <section id="referrals" className="bg-black py-16 text-white lg:py-24">
+    <section id="referrals-preview" className="bg-black py-16 text-white lg:py-24">
       <div className="mx-auto max-w-7xl px-4 text-center sm:px-6 lg:px-8">
         <div className="text-sm font-medium uppercase tracking-[0.18em] text-brand/80">{t('homeReferrals.eyebrow')}</div>
         <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">{t('homeReferrals.title')}</h2>
@@ -1042,7 +1106,7 @@ function ReferralsSection({ links, setView, t }) {
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <button
-            onClick={() => setView('referrals')}
+            onClick={() => navigateToAnchor(links.referrals)}
             className="rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100"
           >
             {t('homeReferrals.viewCta')}
@@ -1224,7 +1288,7 @@ function AboutSection({ t, lang }) {
   );
 
   return (
-    <section id="about" className="border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
+    <section id="about" className="scroll-mt-24 border-t border-gray-200 bg-gray-50 py-12 transition-colors dark:border-slate-800 dark:bg-slate-900/60 lg:py-16">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
         <SectionIntro eyebrow={t('about.eyebrow')} title={t('about.title')} />
         <div className="mt-6 rounded-xl border border-gray-200 bg-white p-8 dark:border-slate-800 dark:bg-slate-950">
@@ -1292,10 +1356,8 @@ function JoinSection({ links, t }) {
 
 function Footer({ links, currentView, navigateToAnchor, communityRulesHref, t }) {
   const handleAnchorClick = (e, href) => {
-    if (currentView !== 'home') {
-      e.preventDefault();
-      navigateToAnchor(href);
-    }
+    e.preventDefault();
+    navigateToAnchor(href);
   };
 
   return (

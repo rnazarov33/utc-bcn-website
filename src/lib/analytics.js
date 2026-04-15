@@ -63,7 +63,7 @@ export function getHashPageView() {
   }
 
   const hash = window.location.hash.trim();
-  if (!hash || hash === '#top') {
+  if (!hash || hash === '#top' || hash === '#referrals') {
     return null;
   }
 
