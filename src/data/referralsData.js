@@ -196,6 +196,13 @@ export const referralsData = [
     "contact": "@anastasiialynnyk"
   },
   {
+    "company": "Preply",
+    "positionsOpen": "https://preply.com/en/careers#SearchJobs",
+    "pointOfContact": "Roman Nazarov",
+    "wayToContact": "Telegram",
+    "contact": "@rrom4ik"
+  },
+  {
     "company": "Rakuten TV",
     "positionsOpen": "https://rakuten.wd1.myworkdayjobs.com/RakutenTV",
     "pointOfContact": "Дмитро Коваль",
