@@ -2,6 +2,7 @@ import React, { useState, useEffect, useLayoutEffect, useCallback, useRef } from
 import CompanyReferrals from './CompanyReferrals';
 import { translations } from './translations';
 import { getHashPageView, initAnalytics, trackPageView } from './lib/analytics';
+import { updateSeo } from './lib/seo';
 
 const REFERRALS_HASH = '#referrals';
 
@@ -41,6 +42,10 @@ export default function App() {
   useEffect(() => {
     initAnalytics();
   }, []);
+
+  useEffect(() => {
+    updateSeo({ lang, view });
+  }, [lang, view]);
 
   useEffect(() => {
     const pagePath = view === 'home' ? '/' : '/referrals';
@@ -575,6 +580,9 @@ function HeroCarousel({ t }) {
               <img
                 src={slide.src}
                 alt={slide.alt}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
                 className={`h-full w-full object-cover transition-transform duration-700 ${slide.imageClassName}`}
                 onError={(e) => { e.target.style.display = 'none'; }}
               />
