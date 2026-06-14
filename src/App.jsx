@@ -91,7 +91,7 @@ export default function App() {
     referrals: REFERRALS_HASH,
     rules: "#rules",
     about: "#about",
-    telegram: "https://t.me/+sksFxTZOGEQ4MTQ6",
+    telegram: "https://t.me/+VQtfbCdlbBk3YzI6",
     instagram: "https://www.instagram.com/utc.barca/",
     linkedin: "https://www.linkedin.com/company/utc-barcelona/",
     luma: "https://lu.ma/utc-events",

@@ -3,7 +3,7 @@ const SITE_URL = 'https://utcbarcelona.com';
 const DEFAULT_IMAGE_PATH = '/images/750F535C-DCCB-4EB4-8913-BFA8D762499E.JPG';
 const DEFAULT_IMAGE_ALT = 'UTC Barcelona community event';
 const SOCIAL_PROFILES = [
-  'https://t.me/+sksFxTZOGEQ4MTQ6',
+  'https://t.me/+VQtfbCdlbBk3YzI6',
   'https://www.instagram.com/utc.barca/',
   'https://www.linkedin.com/company/utc-barcelona/',
   'https://lu.ma/utc-events',
