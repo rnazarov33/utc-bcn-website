@@ -54,6 +54,13 @@ fi
 
 mv "$STAGING_DIR" "$LIVE_DIR"
 
+# Restart the Docker container so it picks up the new files from the bind mount.
+DOCKER_CONTAINER="${DOCKER_CONTAINER:-utc-site}"
+if command -v docker &>/dev/null && docker ps --format '{{.Names}}' | grep -q "^${DOCKER_CONTAINER}$"; then
+  echo "Restarting Docker container: $DOCKER_CONTAINER"
+  docker restart "$DOCKER_CONTAINER"
+fi
+
 if [[ -n "$POST_DEPLOY_RELOAD_CMD" ]]; then
   bash -lc "$POST_DEPLOY_RELOAD_CMD"
 fi
