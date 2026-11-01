@@ -91,7 +91,7 @@ export default function App() {
     referrals: REFERRALS_HASH,
     rules: "#rules",
     about: "#about",
-    telegram: "https://t.me/+OQ3KNEIUglw1NWRi",
+    telegram: "https://t.me/+0xLaI4znKWZkMzRi",
     instagram: "https://www.instagram.com/utc.barca/",
     linkedin: "https://www.linkedin.com/company/utc-barcelona/",
     luma: "https://lu.ma/utc-events",
@@ -259,7 +259,7 @@ export default function App() {
       {
         title: t('chats.housing'),
         text: t('chats.housingText'),
-        href: "https://t.me/+Vrbn21TcRyEwMGVi",
+        href: "https://t.me/+qSGuteAXF6g1ZDI6",
       },
       {
         title: t('chats.digest'),

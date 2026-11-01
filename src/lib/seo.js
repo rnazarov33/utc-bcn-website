@@ -1,5 +1,5 @@
 const SITE_NAME = 'UTC Barcelona';
-const SITE_URL = 'https://utcbarcelona.com';
+const SITE_URL = 'https://utc.barcelona';
 const DEFAULT_IMAGE_PATH = '/images/750F535C-DCCB-4EB4-8913-BFA8D762499E.JPG';
 const DEFAULT_IMAGE_ALT = 'UTC Barcelona community event';
 const SOCIAL_PROFILES = [
